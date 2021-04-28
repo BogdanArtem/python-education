@@ -1,5 +1,6 @@
 """This is a module for mathematical operations"""
 
+
 class Calculator:
     """Class for basic mathematical operations"""
 
