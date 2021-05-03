@@ -18,7 +18,7 @@ class Application(tk.Frame):
         self._add_attemps(row=4, column=0)
         
     def click(self):
-        """Click initialized by "guess button.""""
+        """Click initialized by "guess button."""
         # Get user input
         self.user_inp = self.text_input.get().lower()
         self.game.guess(self.user_inp)
