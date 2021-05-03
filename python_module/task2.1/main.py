@@ -1,13 +1,16 @@
+"""This is tkinter application built around Hangman class"""
+
 import tkinter as tk
 from tkinter import messagebox
 from hangman import Hangman
 
-class Application(tk.Frame):            
+class Application(tk.Frame):
+    """Tkinter application for Hangman """
     def __init__(self, master=None):
-        tk.Frame.__init__(self, master)  
-        self.grid()                      
+        tk.Frame.__init__(self, master)
         self.game = Hangman()
         self.create_widgets()
+        self.grid()
 
     def create_widgets(self):
         """Create all widgets and display them."""
@@ -16,7 +19,7 @@ class Application(tk.Frame):
         self._add_text_input(row=2, column=0)
         self._add_button(row=3, column=0)
         self._add_attemps(row=4, column=0)
-        
+
     def click(self):
         """Click initialized by "guess button."""
         # Get user input
@@ -48,7 +51,7 @@ class Application(tk.Frame):
 
         elif self.game.is_dead():
             messagebox.showinfo(
-                "WASTED!", 
+                "WASTED!",
                 f"You've run out of lives. The word was {self.game.get_word()}"
                 )
             self.quit()
@@ -62,10 +65,10 @@ class Application(tk.Frame):
         label_num = f"Lives: {self.game.lives}"
         # Lock widget variable
         self.lives_var.set(label_num)
-        self.lives = tk.Label(self, textvariable=self.lives_var)    
+        self.lives = tk.Label(self, textvariable=self.lives_var)
         # Display widget variable
-        self.lives.grid(row=0, column=0)
-          
+        self.lives.grid(row=row, column=column)
+
     def _add_attemps(self, row, column):
         """Add widget for displaying attempts"""
         # Create widget variable for future change
@@ -92,15 +95,15 @@ class Application(tk.Frame):
     def _add_button(self, row, column):
         """Add button to initialize "click" function"""
         self.guess_button = tk.Button(
-            self, 
-            text='Enter', 
-            command=self.click, 
-            width=21, 
+            self,
+            text='Enter',
+            command=self.click,
+            width=21,
             highlightcolor='blue'
         )
         self.guess_button.grid(row=row, column=column)
-        
 
-app = Application()                      
-app.master.title('Hangman')  
-app.mainloop()  
+
+app = Application()
+app.master.title('Hangman')
+app.mainloop()

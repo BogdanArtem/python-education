@@ -1,8 +1,11 @@
+"""This is core hangmen module for implementing hangman game"""
+
 import random
 import json
 from datetime import datetime
 
 class Hangman:
+    """Core hangman class"""
     def __init__(self, lives=5, logging=True):
         self.word = self.get_random_word('words.txt')
         self.letters_tried = []
@@ -16,21 +19,22 @@ class Hangman:
             self._guess_word(inp)
         else:
             self._guess_letter(inp)
-        if self.logging: self.log(inp)
+        if self.logging:
+            self.log(inp)
 
-    def _guess_word(self, word):
+    def _guess_word(self, user_word):
         """Checks if the word is guessed"""
-        if self.word == word:
+        if self.word == user_word:
             self.guessed = True
         else:
             self.lives -=1
-    
+
     def _guess_letter(self, letter):
         """Checks if the letter is guessed"""
         # Check if the letter hasn't been tried
         if letter not in self.letters_tried:
             self.letters_tried.append(letter)
-        
+
         # Check if lives should be subtracted
         if letter not in self.word:
             self.lives -= 1
@@ -43,26 +47,25 @@ class Hangman:
         """Return word with masked ungessed words"""
         unmask = set(self.word) & set(self.letters_tried)
         return ' '.join([letter if letter in unmask else '_' for letter in self.word])
-    
+
     def log(self, inp, console=True):
         """Logging into logs.json file and console"""
         now = datetime.now()
         lives = self.lives
-        # TODO: change to hours
         now_str = now.strftime("%Y-%m-%d, %H:%M:%S")
         entry = json.dumps({
-            'time':now_str, 
-            'lives':lives, 
-            'input':inp, 
+            'time':now_str,
+            'lives':lives,
+            'input':inp,
             'is_guessed':str(self.is_guessed()),
             'tried_letters': str(self.letters_tried),
             'word': self.word
             })
 
         # Add log entry
-        with open('logs.json', 'a') as f:
-            f.write(entry)
-            f.write('\n')
+        with open('logs.json', 'a') as file:
+            file.write(entry)
+            file.write('\n')
 
         if console:
             print("*"*5)
@@ -70,9 +73,11 @@ class Hangman:
             print("*"*5)
 
     def get_word(self):
+        """Getter for word"""
         return self.word
 
     def get_lives(self):
+        """Getter for lives"""
         return self.lives
 
     def is_guessed(self):
@@ -83,17 +88,17 @@ class Hangman:
         """Check if you still have lives as boolean"""
         if self.lives == 0:
             return True
-        else: return False
+        return False
 
     @staticmethod
     def get_random_word(f_path):
         """Get random word from file of words"""
-        with open(f_path, 'r') as f:
-            text = f.read()
+        with open(f_path, 'r') as file:
+            text = file.read()
             words = text.split('\n')
             return random.choice(words)
 
-            
+
 if __name__ == '__main__':
     # Tests
     word = Hangman(logging=False)
