@@ -3,18 +3,19 @@ import json
 from datetime import datetime
 
 class Hangman:
-    def __init__(self, lives):
+    def __init__(self, lives=5, logging=True):
         self.word = self.get_random_word('words.txt')
         self.letters_tried = []
         self.guessed = False
         self.lives = lives
+        self.logging = logging
 
     def guess(self, inp):
         if len(inp) > 1:
             self._guess_word(inp)
         else:
             self._guess_letter(inp)
-        self.log(inp)
+        if self.logging: self.log(inp)
 
     def _guess_word(self, word):
         if self.word == word:
@@ -92,7 +93,7 @@ class Hangman:
             
 if __name__ == '__main__':
     # Tests
-    word = Hangman(5)
+    word = Hangman(logging=False)
     word.word = "generators"
     word.guess('a')
     word.guess('e')
@@ -102,7 +103,6 @@ if __name__ == '__main__':
     print("Get word: " + word.get_word())
     print("Get masked word: " + word.get_masked_word())
     print("=" * 50)
-
 
     print("Get word: " + word.get_word())
     print("Get masked word: " + word.get_masked_word())
