@@ -43,7 +43,7 @@ class Hangman:
         now = datetime.now()
         lives = self.lives
         # TODO: change to hours
-        now_str = now.strftime("%Y-%m-%d")
+        now_str = now.strftime("%Y-%m-%d, %H:%M:%S")
         entry = json.dumps({
             'time':now_str, 
             'lives':lives, 
@@ -52,11 +52,16 @@ class Hangman:
             'tried_letters': str(self.letters_tried),
             'word': self.word
             })
+
+        # Add log entry
+        with open('logs.json', 'a') as f:
+            f.write(entry)
+            f.write('\n')
+
         if console:
             print("*"*5)
             print(entry)
             print("*"*5)
-
 
     def get_word(self):
         return self.word
@@ -98,7 +103,7 @@ if __name__ == '__main__':
     print("Get masked word: " + word.get_masked_word())
     print("=" * 50)
 
-    
+
     print("Get word: " + word.get_word())
     print("Get masked word: " + word.get_masked_word())
     word.guess('g')
