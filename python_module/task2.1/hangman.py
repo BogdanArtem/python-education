@@ -11,6 +11,7 @@ class Hangman:
         self.logging = logging
 
     def guess(self, inp):
+        """ Logs and routs input either to _guess_word or to _guess_letter """
         if len(inp) > 1:
             self._guess_word(inp)
         else:
@@ -18,12 +19,14 @@ class Hangman:
         if self.logging: self.log(inp)
 
     def _guess_word(self, word):
+        """Checks if the word is guessed"""
         if self.word == word:
             self.guessed = True
         else:
             self.lives -=1
     
     def _guess_letter(self, letter):
+        """Checks if the letter is guessed"""
         # Check if the letter hasn't been tried
         if letter not in self.letters_tried:
             self.letters_tried.append(letter)
@@ -37,10 +40,12 @@ class Hangman:
             self.guessed = True
 
     def get_masked_word(self):
+        """Return word with masked ungessed words"""
         unmask = set(self.word) & set(self.letters_tried)
         return ' '.join([letter if letter in unmask else '_' for letter in self.word])
     
     def log(self, inp, console=True):
+        """Logging into logs.json file and console"""
         now = datetime.now()
         lives = self.lives
         # TODO: change to hours
@@ -82,9 +87,7 @@ class Hangman:
 
     @staticmethod
     def get_random_word(f_path):
-        """Get a random word from a file of words
-        
-        """
+        """Get random word from file of words"""
         with open(f_path, 'r') as f:
             text = f.read()
             words = text.split('\n')
