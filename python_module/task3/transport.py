@@ -13,12 +13,37 @@ class Transport(ABC):
         self.t_name = t_name
         self.capacity = capacity
 
-
     def __repr__(self):
         return f"Transport[driver: {self.driver},\
 transport: {self.t_name}, \
 capacity: {self.capacity}, \
 passangers: {self.passangers}]"
+
+    def __hash__(self):
+        return hash(self.t_name + str(self.capacity) + str(hash(self.driver)))
+
+    def __eq__(self, other):
+        """Defines behavior for the equality operator, ==."""
+        return (self.driver == other.driver) and\
+            (self.passangers == other.passangers) and\
+            (self.t_name == other.t_name) and\
+            (self.capacity == other.capacity)
+
+    def __lt__(self, other):
+        """Defines behavior for the less-than operator, <."""
+        return self.capacity < other.capacity
+
+    def __gt__(self, other):
+        """Defines behavior for the greater-than operator, >."""
+        return self.capacity > other.capacity
+
+    def __le__(self, other):
+        """Defines behavior for the less-than-or-equal-to operator, <=."""
+        return self.capacity <= other.capacity
+
+    def __ge__(self, other):
+        """Defines behavior for the greater-than-or-equal-to operator, >=."""
+        return self.capacity >= other.capacity
 
     @abstractmethod
     def move(self):
@@ -146,6 +171,12 @@ class Passanger:
         """String representation of Passanger"""
         return f"Passanger[name: {self.name}, money: {self.money}]"
 
+    def __hash__(self):
+        return hash(self.name + str(self.money))
+
+    def __eq__(self, other):
+        return (self.money == other.money) and (self.name == other.name)
+
     def pay(self, price):
         """Pay some money for services"""
         if self.money >= price:
@@ -212,3 +243,35 @@ if __name__ == '__main__':
     optimus_prime.air_conditioning()
     optimus_prime.move()
     print("*" * 50)
+
+    # ======================
+    # Magic methods testing
+    # ======================
+
+    print("Testing magic methods...")
+    driver_tim = Passanger("Tim", 850)
+    sprinter = Bus("Sprinter", driver_tim, capacity=15, faire_price=5)
+    sprinterCopy = Bus("Sprinter", driver_tim, capacity=15, faire_price=5)
+    mazda = Car("Mazda", driver_tim, capacity=4)
+
+    # __hash__
+    print("hash(sprinter) = " + str(hash(sprinter)))
+    print("hash(sprinterCopy) = " + str(hash(sprinterCopy)))
+    print("hash(sprinter) = hash(sprinterCopy) :", hash(sprinter) == hash(sprinterCopy))
+
+    # __eq__
+    print("Sprinter == SprinterCopy: ", sprinter == sprinterCopy)
+
+    # __lt__
+    print("sprinter < mazda:", sprinter < mazda)
+
+    # __gt__
+    print("sprinter > mazda:", sprinter > mazda)
+
+    # __le__
+    print("sprinter <= mazda:", sprinter <= mazda)
+    print("sprinter <= sprinterCopy:", sprinter <= sprinterCopy)
+
+    # __ge__
+    print("sprinter >= mazda:", sprinter >= mazda)
+    print("sprinter >= sprinterCopy:", sprinter >= sprinterCopy)
