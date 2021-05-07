@@ -1,6 +1,7 @@
 """This module is used to implement OOP concepts in Python"""
 
 from abc import ABC, abstractmethod
+import random
 
 
 class Transport(ABC):
@@ -70,6 +71,30 @@ passangers: {self.passangers}]"
     @driver.deleter
     def driver(self):
         del self._driver
+        self._driver = None
+
+    @classmethod
+    def with_random_driver(cls, t_name, capacity):
+        """Create transport class with random driver"""
+        driver = cls._get_random_driver()
+        return cls(t_name, driver, capacity)
+
+    @classmethod
+    def _get_random_driver(cls):
+        """Create a random driver"""
+        names = ['Liam', 'Noah', 'Oliver']
+        d_name = random.choice(names)
+        d_money = random.randrange(0, 1000, 10)
+        driver_rand = Passanger(d_name, d_money)
+        return driver_rand
+
+    @staticmethod
+    def destroy(transport):
+        """Destroy transport"""
+        transport.capacity = 0
+        del transport.driver
+        transport.passangers.clear()
+        return transport
 
     @abstractmethod
     def move(self):
@@ -114,6 +139,12 @@ class PublicTransport(Transport):
     @faire_price.deleter
     def faire_price(self):
         del self._faire_price
+
+    @classmethod
+    def with_random_driver(cls, t_name, capacity, faire_price):
+        """Return """
+        driver = cls._get_random_driver()
+        return cls(t_name, driver, capacity, faire_price)
 
     @abstractmethod
     def message_to_passengers(self, message):
@@ -314,3 +345,19 @@ if __name__ == '__main__':
     # __ge__
     print("sprinter >= mazda:", sprinter >= mazda)
     print("sprinter >= sprinterCopy:", sprinter >= sprinterCopy)
+
+    # ======================
+    # Decorators testing
+    # ======================
+
+    # Class method
+    paz = Bus.with_random_driver('PAZ', capacity=25, faire_price=10)
+    print("Random bus driver:", paz.driver)
+
+    audi = Car.with_random_driver("Audi", capacity=2)
+    print("Random car driver:", audi.driver)
+
+    # Static function
+    print("Before destroying :", ikarus)
+    paz = Transport.destroy(ikarus)
+    print("After destroying :", ikarus)
