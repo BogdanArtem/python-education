@@ -226,6 +226,16 @@ class Car(Transport):
 class Transformer(Car, Scooter):
     """A simple transformer from Cybertron"""
 
+    def move(self):
+        print("This is how transformers move")
+        # Move from scooter, can't use super
+        Scooter.move(self)
+
+    def stop(self):
+        print("Still transformer")
+        #Stop from car
+        super().stop()
+
     def fight(self):
         """Engage in furious fight"""
         print(f"Piy piy, I am {self.t_name}")
@@ -312,6 +322,7 @@ if __name__ == '__main__':
     optimus_prime.fast_parcking()
     optimus_prime.air_conditioning()
     optimus_prime.move()
+    optimus_prime.stop()
     print("*" * 50)
 
     # ======================
