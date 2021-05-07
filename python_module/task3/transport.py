@@ -8,9 +8,9 @@ class Transport(ABC):
 
     def __init__(self, t_name, driver, capacity):
         """Transport should have name, driver and optionally some passangers"""
-        self.driver = driver
+        self._driver = driver
         self.passangers = []
-        self.t_name = t_name
+        self._t_name = t_name
         self.capacity = capacity
 
     def __repr__(self):
@@ -45,6 +45,32 @@ passangers: {self.passangers}]"
         """Defines behavior for the greater-than-or-equal-to operator, >=."""
         return self.capacity >= other.capacity
 
+    @property
+    def t_name(self):
+        """Transport name property"""
+        return self._t_name
+
+    @t_name.setter
+    def t_name(self, name):
+        self._t_name = name
+
+    @t_name.deleter
+    def t_name(self):
+        del self._t_name
+
+    @property
+    def driver(self):
+        """Driver property"""
+        return self._driver
+
+    @driver.setter
+    def driver(self, person):
+        self._driver = person
+
+    @driver.deleter
+    def driver(self):
+        del self._driver
+
     @abstractmethod
     def move(self):
         """Get the transport going"""
@@ -74,7 +100,20 @@ class PublicTransport(Transport):
     def __init__(self, t_name, driver, capacity, faire_price):
         """Same as Transport __init__ but with faire price """
         super().__init__(t_name, driver, capacity)
-        self.faire_price = faire_price
+        self._faire_price = faire_price
+
+    @property
+    def faire_price(self):
+        """Faire price attribute"""
+        return self._faire_price
+
+    @faire_price.setter
+    def faire_price(self, price):
+        self._faire_price = price
+
+    @faire_price.deleter
+    def faire_price(self):
+        del self._faire_price
 
     @abstractmethod
     def message_to_passengers(self, message):
