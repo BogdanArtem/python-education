@@ -1,0 +1,71 @@
+**************************************************
+Creating passangers...
+Passangers created
+[Passanger[name: Alex, money: 50], Passanger[name: Emma, money: 40], Passanger[name: John, money: 100], Passanger[name: Nick, money: 20], Passanger[name: Tom, money: 30]]
+**************************************************
+Testing passanger
+Paid 10 : Passanger[name: Nick, money: 10]
+Paid 10 : Passanger[name: Nick, money: 0]
+No money no honey
+**************************************************
+Testing bus...
+Adding passangers...
+Paid 10 : Passanger[name: Alex, money: 40]
+Bus[driver: Passanger[name: Sam, money: 1000],transport: Ikarus, capacity: 30, passangers: [Passanger[name: Alex, money: 40]]]
+Paid 10 : Passanger[name: Emma, money: 30]
+Bus[driver: Passanger[name: Sam, money: 1000],transport: Ikarus, capacity: 30, passangers: [Passanger[name: Alex, money: 40], Passanger[name: Emma, money: 30]]]
+Testing methods of bus...
+Dear passengers of the bus 'Ikarus', we are starting our journey
+Hooray, the bus 'Ikarus' is moving!
+Boooooo, it's Ikarus
+Here, the bus 'Ikarus' has stopped
+Dear passengers of the bus 'Ikarus', thank you
+**************************************************
+Testing car...
+Adding passanger
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: [Passanger[name: Alex, money: 40]]]
+Adding passanger
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: [Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40]]]
+Adding passanger
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: [Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40]]]
+Adding passanger
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: [Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40]]]
+Adding passanger
+The transport is full
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: [Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40]]]
+Removing passanger
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: [Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40]]]
+Removing passanger
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: [Passanger[name: Alex, money: 40], Passanger[name: Alex, money: 40]]]
+Removing passanger
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: [Passanger[name: Alex, money: 40]]]
+Removing passanger
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: []]
+Removing passanger
+No such passanger inside Nissan
+Transport[driver: Passanger[name: Tobby, money: 600],transport: Nissan, capacity: 4, passangers: []]
+**************************************************
+Testing Trasnformer...
+Piy piy, I am Optimus Prime
+I'm Optimus Prime and I am parked
+Cool air, thank you, Optimus Prime
+This is how transformers move
+Scooters! I love scooters
+Still transformer
+The car is stopped
+**************************************************
+Testing magic methods...
+hash(sprinter) = 4182205938269350227
+hash(sprinterCopy) = 4182205938269350227
+hash(sprinter) = hash(sprinterCopy) : True
+Sprinter == SprinterCopy:  True
+sprinter < mazda: False
+sprinter > mazda: True
+sprinter <= mazda: False
+sprinter <= sprinterCopy: True
+sprinter >= mazda: True
+sprinter >= sprinterCopy: True
+Random bus driver: Passanger[name: Liam, money: 690]
+Random car driver: Passanger[name: Noah, money: 620]
+Before destroying : Bus[driver: Passanger[name: Sam, money: 1000],transport: Ikarus, capacity: 30, passangers: [Passanger[name: Alex, money: 40], Passanger[name: Emma, money: 30]]]
+After destroying : Bus[driver: None,transport: Ikarus, capacity: 0, passangers: []]
