@@ -1,4 +1,5 @@
-# change this code
+"""If else conditions examples"""
+
 number = 16
 second_number = 0
 first_array = [1, 2, 3]

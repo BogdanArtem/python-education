@@ -1,3 +1,5 @@
+""" String formatting examples """
+
 s = "Strings are awesome!"
 # Length should be 20
 print("Length of s = %d" % len(s))

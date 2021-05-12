@@ -1,3 +1,5 @@
+"""Lists practice examples"""
+
 numbers = []
 strings = []
 names = ["John", "Eric", "Jessica"]

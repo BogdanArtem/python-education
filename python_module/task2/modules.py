@@ -1,3 +1,6 @@
+"""Modules practice examples"""
+
+
 import re
 
 # Your code goes here

@@ -1,3 +1,5 @@
+"""Types and variables practice examples"""
+
 
 mystring = "hello"
 myfloat = 10.0
