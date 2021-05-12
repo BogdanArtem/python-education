@@ -1,0 +1,6 @@
+************* Module sentence
+sentence.py:93:10: W0212: Access to a protected member _words of a client class (protected-access)
+
+------------------------------------------------------------------
+Your code has been rated at 9.87/10 (previous run: 9.88/10, -0.01)
+
