@@ -1,0 +1,6 @@
+ORDERS CREATED...
+<Order:[order_id: 4026, meals: [French creame soup, French creame soup], cust_id: 9529, is_prepared: False], is_served: False, is_paid: False
+<Order:[order_id: 1045, meals: [French creame soup], cust_id: 2639, is_prepared: False], is_served: False, is_paid: False
+FINAL...
+<Order:[order_id: 4026, meals: [French creame soup, French creame soup], cust_id: 9529, is_prepared: True], is_served: True, is_paid: True
+<Order:[order_id: 1045, meals: [French creame soup], cust_id: 2639, is_prepared: True], is_served: True, is_paid: True
