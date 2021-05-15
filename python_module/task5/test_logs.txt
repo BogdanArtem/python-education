@@ -6,19 +6,19 @@ Calling Sentence('sdsd dfdfdf')
 Raised ValueError
 **************************************************
 String representation of 'lazy !!! fox d*6 &&& dog.'
-<Sentence(words=3, other_chars=3)>
+<Sentence(words=5, other_chars=8)>
 **************************************************
 Calling Sentence('lazy fox jumps over the brown dog.')._words()
-<generator object Sentence._words at 0x7fb43fa5d660>
+<generator object Sentence._words at 0x7fcda8a65660>
 **************************************************
 Calling Sentence('lazy !!! fox d*6 &&& dog.').words
-['lazy', 'fox', 'dog']
+['lazy', 'fox', 'd', '6', 'dog']
 **************************************************
 Calling Sentence('lazy !!! fox d*6 &&& dog.').other_chars
-['!!!', 'd*6', '&&&']
+['!', '!', '!', '*', '&', '&', '&', '.']
 **************************************************
 Calling Sentence('lazy !!! fox d*6 &&& dog.')[:]
-['lazy', '!!!', 'fox', 'd*6', '&&&', 'dog']
+['lazy', 'fox', 'd', '6', 'dog']
 **************************************************
 Calling Sentence('lazy fox jumps over the brown dog.')[0:2]
 ['lazy', 'fox']

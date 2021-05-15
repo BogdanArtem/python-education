@@ -1,6 +1,6 @@
 """ Module for iterator implementation """
 
-from string import ascii_letters
+import re
 
 
 class SentenceIterator:
@@ -30,7 +30,7 @@ class Sentence:
         if text[-1] not in ('!', '.', '?'):
             raise ValueError("Please, end your sentence")
 
-        self.text = text[0:-1]
+        self.text = text
 
     def __getitem__(self, items):
         """Return items from sentence """
@@ -43,25 +43,20 @@ class Sentence:
         return SentenceIterator(self.words)
 
     def _words(self):
-        """Generate infinite sequence of words from text"""
-        word = ""
-        for letter in self.text:
-            if letter != " ":
-                word += letter
-            else:
-                yield word
-                word = ""
-        yield word
+        """Generate sequence of words from text"""
+        regex = r'\b\w+\b'
+        for word in re.findall(regex, self.text):
+            yield word
 
     @property
     def words(self):
-        """Filter out words that don't have ascii letters"""
-        return [word for word in self._words() if set(word).issubset(set(ascii_letters))]
+        """Create list of words from _words generator"""
+        return list(self._words())
 
     @property
     def other_chars(self):
-        """Filter out words that have ascii letters"""
-        return [word for word in self._words() if not set(word).issubset(set(ascii_letters))]
+        """Create list of other characters in text"""
+        return [sign for sign in re.findall(r'[^\w\s]', self.text)]
 
 
 

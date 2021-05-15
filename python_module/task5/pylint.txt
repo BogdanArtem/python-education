@@ -1,6 +1,7 @@
 ************* Module sentence
-sentence.py:93:10: W0212: Access to a protected member _words of a client class (protected-access)
+sentence.py:59:0: R1721: Unnecessary use of a comprehension (unnecessary-comprehension)
+sentence.py:88:10: W0212: Access to a protected member _words of a client class (protected-access)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.87/10 (previous run: 9.88/10, -0.01)
+Your code has been rated at 9.73/10 (previous run: 9.73/10, +0.00)
 
