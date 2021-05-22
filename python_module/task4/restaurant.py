@@ -6,19 +6,19 @@ import random
 
 class Person(ABC):
     """Abstract class of a person"""
-    def __init__(self, fname: str, lname: str) -> None:
-        self._fname = fname
-        self._lname = lname
+    def __init__(self, first_name: str, last_name: str) -> None:
+        self._first_name = first_name
+        self._last_name = last_name
 
     @property
     def fname(self):
-        """Get first name"""
-        return self._fname
+        """Get person's first name"""
+        return self._first_name
 
     @property
     def lname(self):
-        """Get last name"""
-        return self._lname
+        """Get person's last name"""
+        return self._last_name
 
 
 class Meal:
@@ -120,7 +120,8 @@ is_paid: {self.is_paid}"
         """Set the state of order's payment"""
         self._is_paid = value
 
-    def get_cooking_time(self):
+    @property
+    def cooking_time(self):
         """Get order's cooking time"""
         return max((time.cooking_time() for time in self.meals))
 
@@ -180,13 +181,13 @@ class DeliveryBoy(Employee):
     """Employee that delivers products"""
 
     @staticmethod
-    def pack(order: Order):
+    def pack(order: OnlineOrder):
         """Pack order"""
         order.pack()
         return order
 
     @staticmethod
-    def deliver(order: Order):
+    def deliver(order: OnlineOrder):
         """Deliver order"""
         order.deliver()
         return order
@@ -262,6 +263,11 @@ class CreditCard:
     def ballance(self):
         """Get credit card ballance"""
         return self._ballance
+
+    @ballance.setter
+    def ballance(self, value):
+        """Change credit card ballance"""
+        self._ballance = value
 
     def charge(self, amount:float) -> None:
         """Charge fixed amount of money from credit card"""
