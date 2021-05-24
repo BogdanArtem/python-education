@@ -3,6 +3,7 @@
 
 import logging
 from collections import deque
+from player import Player
 
 
 logging.basicConfig(level='INFO')
@@ -16,39 +17,50 @@ class Game:
         self.board_size = size
         self.board = [[' '] * size for _ in range(size)]
         self.symbols = ['X', 'O']
-        self.game_over = False
+        self._game_over = False
         self.turns = 1
 
     def __repr__(self):
         """Game representation.
         
         Row consists of 3 textual lines. Contiguous rows share 1 textual line"""
-        picture = ""
-        for row in self.board:
+        render = ""
+        for num, row in enumerate(self.board):
             line1 = "".join([" -- " for _ in row]) + "\n"
-            line2 = "".join(["| " + element + " " for element in row]) + "|\n"
-            picture += (line1 + line2)
-        picture += "".join([" -- " for _ in row]) + "\n"
-        return picture
+            line2 = "".join(["| " + element + " " for element in row]) + "| " + str(num) + "\n"
+            render += (line1 + line2)
+        render += "".join([" -- " for _ in row]) + "\n"
+        render += "".join([f"  {num} " for num, _ in enumerate(self.board)])
+        return render
 
-    def play(self):
-        """Start game and receive input."""
-        while not self.game_over:
-            print(self)
-            x_point, y_point = [int(x) for x in input("Your move: ").split()]
-            self.move(x_point, y_point)
+    @property
+    def game_over(self):
+        return self._game_over
 
-    def move(self, x_point, y_point):
-        """Change symbols on board."""
-        symbol = self.symbols[self.turns//2]
-        logging.info("Player %s is moving", symbol)
-        logging.debug("Making move at x:%d, y:%d...", x_point, y_point)
-        self.board[x_point][y_point] = symbol
+    @game_over.setter
+    def game_over(self, value: bool):
+        self._game_over = value
 
-        # self.turns += 1
-        logging.info("Turn number: %d", self.turns)
+    # def move(self, x_point, y_point):
+    #     """Change symbols on board."""
+    #     symbol = self.symbols[self.turns//2]
+    #     logging.info("Player %s is moving", symbol)
+    #     logging.debug("Making move at x:%d, y:%d...", x_point, y_point)
+    #     self.board[x_point][y_point] = symbol
+
+    #     # self.turns += 1
+    #     logging.info("Turn number: %d", self.turns)
+    #     self._check_in_all_dimensions()
+    #     logging.info("Game over is: %")
+
+    def change_board(self, x_point, y_point, sign):
+        try:
+            if self.board[x_point][y_point] != " ":
+                raise ValueError(f"Sector [{x_point}] [{y_point}] is already filled")
+            self.board[x_point][y_point] = sign
+        except ValueError as e:
+            logging.exception(e)
         self._check_in_all_dimensions()
-        logging.info("Game over is: %")
 
     def _check_in_all_dimensions(self):
         """Check for endgame in rows and diagonals.
@@ -102,11 +114,16 @@ class Game:
 def main():
     """Entrypoint for the game"""
     game = Game(size=3, streak_size=3)
-    player1 = Player("Dima")
-    player2 = Player("Vasya")
+    player1 = Player(name="Dima", sign="X")
+    player2 = Player(name="Vasya", sign="O")
 
     while True:
+        if game.game_over:
+            break
         player1.make_move(game)
+
+        if game.game_over:
+            break
         player2.make_move(game)
 
 
