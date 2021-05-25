@@ -5,8 +5,9 @@ This module is created to practice data structures"""
 
 class Node:
     """Node used in linked list"""
-    def __init__(self, data, next_node):
+    def __init__(self, data, next_node, previous_node):
         self._next = next_node
+        self._previous = previous_node
         self._data = data
 
     @property
@@ -20,6 +21,16 @@ class Node:
         self._next = value
 
     @property
+    def previous(self):
+        """Find next node"""
+        return self._previous
+
+    @previous.setter
+    def previous(self, value):
+        """Change next node"""
+        self._previous = value
+
+    @property
     def data(self):
         """Get data from node"""
         return self._data
@@ -31,40 +42,56 @@ class Node:
 
 
 class LinkedList:
-    """Simple linked list with head and tail"""
+    """Double linked list with head and tail
+    
+    TAIL | == | == | == | == | HEAD
+    """
     def __init__(self):
         self.head = None
         self.tail = None
+        self.empty = True
+
+    def _add_first_node(self, value):
+        """Initial setup for the first node"""
+        first_node = Node(value, next_node=None, previous_node=None)
+        self.head = first_node
+        self.tail = first_node
+        self.empty = False
 
     def append(self, value):
         """Add node to the head of the list"""
-        if self.head and self.tail is None:
-            new_node = Node(value, self.head)
-            self.head = new_node
-            self.tail = new_node
+        if not self.empty:
+            # Create new head node making link to the previous head node
+            new_head_node = Node(value, next_node=None, previous_node=self.head)
+            # Make link to the new head node from old head node 
+            self.head.next = new_head_node
+            # Set new head of list
+            self.head = new_head_node
         else:
-            self.head = Node(value, self.head)
+            self._add_first_node(value)
 
-    def prepend(self, value):
+    def append_tail(self, value):
         """Add node to the tail of the list"""
-        if self.head and self.tail is None:
-            new_node = Node(value, self.head)
-            self.head = new_node
-            self.tail = new_node
+        if not self.empty:
+            # Create new tail node making link to the current tail node
+            new_tail_node = Node(value, next_node=self.tail, previous_node=None)
+            # Make link to the new tail node from old tail node 
+            self.tail.previous = new_tail_node
+            # Set new tail of list
+            self.tail = new_tail_node
         else:
-            self.tail = Node(value, self.tail)
+            self._add_first_node(value)
 
     def pop(self):
-        """Remove node and return it's data from the head of the list"""
+        """Remove node from head and return it's data"""
         if self.head is None:
             raise TypeError("Inappropriate operation applied to empty list")
         result = self.head.data
-        self.head = self.head.next
+        self.head = self.head.previous
         return result
 
-
-    def popleft(self):
-        """Remove node and return it's data from the tail of the list"""
+    def pop_tail(self):
+        """Remove node from tail and return it's data"""
         if self.tail is None:
             raise TypeError("Inappropriate operation applied empty list")
         result = self.tail.data
