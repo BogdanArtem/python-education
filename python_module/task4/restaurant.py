@@ -15,6 +15,7 @@ class Person(ABC):
         """Get person's first name"""
         return self._first_name
 
+
     @property
     def lname(self):
         """Get person's last name"""
@@ -54,9 +55,40 @@ class Meal:
         return self._is_ready
 
 
+class Menu:
+    """Menu for a restaurant which consists of meals"""
+    def __init__(self, meals:list) -> None:
+        self._meals = meals
+
+    @property
+    def meals(self):
+        """Get meals from menu"""
+        return self._meals
+
+    def get_item(self, name: str) -> Meal:
+        """Find meal in menu by name"""
+        return [meal for meal in self.meals if meal.get_name() == name][0]
+
+    def cost_less_than(self, amount: float) -> list:
+        """Find meals that cost less than amount"""
+        return [meal for meal in self.meals if meal.get_price() < amount]
+
+    def cook_less_than(self, time_m: int) -> list:
+        """Find meals that take less than time_m minutes"""
+        return [meal for meal in self.meals if meal.get_time() < time_m]
+
+    def add_meal(self, meal: Meal) -> None:
+        """Add meal to menu"""
+        self.meals.append(meal)
+
+    def remove_meal(self, name: str) -> None:
+        """Remove meal in menu by name"""
+        self.meals = [meal for meal in self.meals if meal.get_name() != name]
+
+
 class Order:
     """Class that represents orders in restaurant"""
-    def __init__(self, meals: Meal) -> None:
+    def __init__(self, meals: Menu) -> None:
         self._order_id = random.randint(0,10_000)
         self._meals = meals
         self._cust_id = None
@@ -125,6 +157,9 @@ is_paid: {self.is_paid}"
         """Get order's cooking time"""
         return max((time.cooking_time() for time in self.meals))
 
+    def get_total(self):
+        return sum((meal.price for meal in self.meals))
+
 
 class OnlineOrder(Order):
     """Online order from customer account"""
@@ -133,6 +168,12 @@ class OnlineOrder(Order):
         self._addr = addr
         self._is_delivered = False
         self._is_packed = False
+
+    def __repr__(self):
+        return f"<OnlineOrder:[order_id: {self.order_id}, \
+meals: {self.meals}, id: {self.cust_id}, \
+is_prepared: {self.is_prepared}], is_delivered: {self.is_delivered}, \
+is_packed: {self.is_packed}, is_paid: {self.is_paid}"
 
     @property
     def addr(self):
@@ -183,13 +224,13 @@ class DeliveryBoy(Employee):
     @staticmethod
     def pack(order: OnlineOrder):
         """Pack order"""
-        order.pack()
+        order.is_packed = True
         return order
 
     @staticmethod
     def deliver(order: OnlineOrder):
         """Deliver order"""
-        order.deliver()
+        order.is_delivered = True
         return order
 
 
@@ -211,43 +252,12 @@ class Chief(Employee):
         order.is_prepared = True
 
 
-class Menu:
-    """Menu for a restaurant which consists of meals"""
-    def __init__(self, meals:list) -> None:
-        self._meals = meals
-
-    @property
-    def meals(self):
-        """Get meals from menu"""
-        return self._meals
-
-    def get_item(self, name: str) -> Meal:
-        """Find meal in menu by name"""
-        return [meal for meal in self.meals if meal.get_name() == name][0]
-
-    def cost_less_than(self, amount: float) -> list:
-        """Find meals that cost less than amount"""
-        return [meal for meal in self.meals if meal.get_price() < amount]
-
-    def cook_less_than(self, time_m: int) -> list:
-        """Find meals that take less than time_m minutes"""
-        return [meal for meal in self.meals if meal.get_time() < time_m]
-
-    def add_meal(self, meal: Meal) -> None:
-        """Add meal to menu"""
-        self.meals.append(meal)
-
-    def remove_meal(self, name: str) -> None:
-        """Remove meal in menu by name"""
-        self.meals = [meal for meal in self.meals if meal.get_name() != name]
-
-
 class CreditCard:
     """Credit card used in Account"""
     def __init__(self, card_num: int, holder: str) -> None:
         self._card_num = card_num
         self._holder = holder
-        self._ballance = 0
+        self._ballance = 1000
 
     @property
     def card_num(self):
@@ -292,6 +302,27 @@ class Account:
     def add_cc(self, card: CreditCard) -> None:
         """Add credit card to user account"""
         self.cards.append(card)
+
+    def make_order(self, a_menu: Menu, meals_num=1) -> OnlineOrder:
+        """Create online order using menu for processing"""
+        order = OnlineOrder(random.choices(a_menu.meals, k=meals_num), self.addr)
+        order.cust_id = self.account_id
+        return order
+
+    def pay(self, order: OnlineOrder):
+        """Make the order paid"""
+        total = order.get_total()
+        if self.cards:
+            for card in self.cards:
+                if card.ballance >= total:
+                    card.charge(total)
+                    order.is_paid = True
+                else:
+                    print("Card ballance is not sufficient")
+        else:
+            print("Credit card has not been added")
+
+
 
     @property
     def account_id(self):
@@ -341,11 +372,20 @@ class Customer(Person):
         """Get customer id"""
         return self._cust_id
 
+    @property
+    def accounts(self):
+        """Get all accounts that belong to the customer"""
+        return self._accounts
+
     def make_order(self, a_menu: Menu, meals_num=1) -> Order:
         """Make order of random meals form menu"""
         order = Order(random.choices(a_menu.meals, k=meals_num))
         order.cust_id = self.cust_id
         return order
+
+    def add_account(self, acc: Account):
+        """Add account to customer accounts"""
+        self._accounts.append(acc)
 
     @staticmethod
     def pay(order: Order) -> None:
@@ -536,3 +576,34 @@ if __name__ == "__main__":
     print("FINAL...")
     print(order1)
     print(order2)
+
+    # Make online order
+    customer4 = Customer('Sal', 'Tompson')
+
+    # Create user account
+    account = Account("user", "12345")
+
+    # Add online account to it
+    customer4.add_account(account)
+
+    # Make online order
+    online_order = customer4.accounts[0].make_order(menu)
+
+    # Cook online order
+    chief.cook(online_order)
+
+    # Pack online order
+    delivery.pack(online_order)
+
+    # Deliver online order
+    delivery.deliver(online_order)
+
+    # Pay for the order without CC and watch it fail
+    account.pay(online_order)
+    print(online_order)
+
+    # Add credit card and try to pay again
+    credit_card = CreditCard(4895495623453845, "John Smith")
+    account.add_cc(credit_card)
+    account.pay(online_order)
+    print(online_order)
