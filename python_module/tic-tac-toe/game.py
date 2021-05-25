@@ -1,8 +1,11 @@
+"""Module to represent tic-tac-toe"""
+
+
 from collections import deque
-import logging
+
 
 class Game:
-    """Class that represents game with players"""
+    """Class that represents game with adaptive size of board"""
 
     def __init__(self, size=3, streak_size=3):
         self.streak_size = streak_size
@@ -14,7 +17,7 @@ class Game:
 
     def __repr__(self):
         """Game representation.
-        
+
         Row consists of 3 textual lines. Contiguous rows share 1 textual line"""
         render = ""
         for num, row in enumerate(self.board):
@@ -27,18 +30,23 @@ class Game:
 
     @property
     def game_over(self):
+        """Check if game is over"""
         return self._game_over
 
     @game_over.setter
     def game_over(self, value: bool):
+        """Change state of game over"""
         self._game_over = value
 
-    def change_board(self, x_point, y_point, sign):
+    def change_board(self, x_point: int, y_point: int, sign: str):
+        """Edit state of the board using x, y and sing.
+
+        Raise ValueError in case the board sector is filled"""
         if self.board[x_point][y_point] != " ":
             raise ValueError(f"Sector [{x_point}] [{y_point}] is already filled")
-        else:
-            self.board[x_point][y_point] = sign
-            self.turns += 1
+        
+        self.board[x_point][y_point] = sign
+        self.turns += 1
 
         self._check_in_all_dimensions()
 
@@ -63,8 +71,7 @@ class Game:
             self.game_over = True
 
     def _check_draw(self):
-        if not self.game_over:
-            return True if self.turns == (self.board_size)**2 else False
+        return True if self.turns == (self.board_size)**2 and not self.game_over else False
 
     def _check_diagonals(self, board):
         """Traverse matrix diagonally.
@@ -97,5 +104,5 @@ class Game:
         win1 = [self.symbols[0]] * self.streak_size
         win2 = [self.symbols[1]] * self.streak_size
         sequence = list(sequence)
-        if sequence == win1 or sequence == win2:
+        if sequence in (win1, win2):
             self.game_over = True
