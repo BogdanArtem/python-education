@@ -1,5 +1,8 @@
-from linked_list import LinkedList
+"""Linked list tests"""
+
 import pytest
+from linked_list import LinkedList
+
 
 def test_linked_list_pop_append():
     """Add the 'The quick brown fox jumps over the lazy dog' to linked list"""
@@ -31,11 +34,10 @@ def test_linked_list_prepend_popleft():
 
 
 def test_linked_list_remove_empty():
+    """Test that list raises error if pop or popleft are called"""
     lst = LinkedList()
     with pytest.raises(TypeError):
         lst.popleft()
 
     with pytest.raises(TypeError):
         lst.pop()
-
-

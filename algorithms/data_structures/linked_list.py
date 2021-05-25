@@ -27,7 +27,7 @@ class Node:
     @data.setter
     def data(self, value):
         """Change data in node"""
-        return self._data
+        self._data = value
 
 
 class LinkedList:
@@ -55,7 +55,7 @@ class LinkedList:
             self.tail = Node(value, self.tail)
 
     def pop(self):
-        """Remove and return node from the head of the list"""
+        """Remove node and return it's data from the head of the list"""
         if self.head is None:
             raise TypeError("Inappropriate operation applied to empty list")
         result = self.head.data
@@ -64,12 +64,9 @@ class LinkedList:
 
 
     def popleft(self):
-        """Remove and return node from the tail of the list"""
+        """Remove node and return it's data from the tail of the list"""
         if self.tail is None:
             raise TypeError("Inappropriate operation applied empty list")
         result = self.tail.data
         self.tail = self.tail.next
         return result
-
-if __name__ == "__main__":
-    pass
