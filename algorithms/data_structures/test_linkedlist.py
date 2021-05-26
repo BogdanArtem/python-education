@@ -68,6 +68,11 @@ def test_linked_list_iter():
     for word, node in zip(words, lst):
         assert word == node.data
 
+    # Empty list iteration
+    lst2 = LinkedList()
+    for node in lst2:
+        print(node.data)
+
 def test_linked_list_removal():
     """Check revoval of items from linked list"""
     lst = LinkedList()
@@ -99,3 +104,14 @@ def test_linked_list_removal():
     for word, node in zip(words, lst):
         print(f"After 'just' removal: {node.data}")
         assert word == node.data
+
+    # remove the only element
+    lst2 = LinkedList()
+    lst2.append("just a value")
+    lst2.remove("just a value")
+    assert lst2.head is None
+    assert lst2.tail is None
+
+    # remove non-existent element
+    with pytest.raises(ValueError):
+        lst2.remove("I don't exist")

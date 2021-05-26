@@ -57,7 +57,9 @@ class LinkedList:
 
     def __next__(self):
         """Travese list nodes from HEAD to TAIL"""
-        if self.node_memo.data is None:
+        #TODO: Linked list of None?
+        #TODO: Empty list iteration
+        if self.node_memo is None:
             raise StopIteration
         value = self.node_memo
         self.node_memo = self.node_memo.previous
@@ -130,5 +132,5 @@ class LinkedList:
                     self.head = previous
                 else:
                     _next.previous = previous
-                break
-
+                return None
+        raise ValueError
