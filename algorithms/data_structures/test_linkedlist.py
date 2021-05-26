@@ -56,3 +56,14 @@ def test_linked_list_remove_empty():
 
     with pytest.raises(TypeError):
         lst.pop()
+
+def test_linked_list_iter():
+    """Test iterator of linked list"""
+    lst = LinkedList()
+    words = ["just", "another", "test", "to", "complete"]
+    for word in words:
+        lst.append(word)
+
+    words.reverse()
+    for word, word_test in zip(words, lst):
+        assert word == word_test

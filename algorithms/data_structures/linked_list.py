@@ -43,13 +43,24 @@ class Node:
 
 class LinkedList:
     """Double linked list with head and tail
-    
+
     TAIL | == | == | == | == | HEAD
     """
     def __init__(self):
         self.head = None
         self.tail = None
         self.empty = True
+
+    def __iter__(self):
+        self.last_node = self.head
+        return self
+
+    def __next__(self):
+        if self.last_node.data is None:
+            raise StopIteration
+        value = self.last_node.data
+        self.last_node = self.last_node.previous
+        return value
 
     def _add_first_node(self, value):
         """Initial setup for the first node"""
@@ -63,7 +74,7 @@ class LinkedList:
         if not self.empty:
             # Create new head node making link to the previous head node
             new_head_node = Node(value, next_node=None, previous_node=self.head)
-            # Make link to the new head node from old head node 
+            # Make link to the new head node from old head node
             self.head.next = new_head_node
             # Set new head of list
             self.head = new_head_node
@@ -75,7 +86,7 @@ class LinkedList:
         if not self.empty:
             # Create new tail node making link to the current tail node
             new_tail_node = Node(value, next_node=self.tail, previous_node=None)
-            # Make link to the new tail node from old tail node 
+            # Make link to the new tail node from old tail node
             self.tail.previous = new_tail_node
             # Set new tail of list
             self.tail = new_tail_node
