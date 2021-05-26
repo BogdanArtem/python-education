@@ -52,14 +52,15 @@ class LinkedList:
         self.empty = True
 
     def __iter__(self):
-        self.last_node = self.head
+        self.node_memo = self.head
         return self
 
     def __next__(self):
-        if self.last_node.data is None:
+        """Travese list nodes from HEAD to TAIL"""
+        if self.node_memo.data is None:
             raise StopIteration
-        value = self.last_node.data
-        self.last_node = self.last_node.previous
+        value = self.node_memo
+        self.node_memo = self.node_memo.previous
         return value
 
     def _add_first_node(self, value):
@@ -108,3 +109,26 @@ class LinkedList:
         result = self.tail.data
         self.tail = self.tail.next
         return result
+
+    def remove(self, value):
+        """Traverse values in linked list and delete fist node that matches value"""
+        for node in self:
+            if node.data == value:
+                # Get reference to previous and next nodes
+                previous = node.previous
+                _next = node.next
+
+                # Make them reference each other 
+                if previous is None:
+                    # Change tail reference if tail is removed
+                     self.tail = _next
+                else:
+                    previous.next = _next
+
+                if _next is None:
+                    # Change head reference if head is removed
+                    self.head = previous
+                else:
+                    _next.previous = previous
+                break
+

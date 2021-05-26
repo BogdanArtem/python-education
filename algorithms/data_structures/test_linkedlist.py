@@ -65,5 +65,37 @@ def test_linked_list_iter():
         lst.append(word)
 
     words.reverse()
-    for word, word_test in zip(words, lst):
-        assert word == word_test
+    for word, node in zip(words, lst):
+        assert word == node.data
+
+def test_linked_list_removal():
+    """Check revoval of items from linked list"""
+    lst = LinkedList()
+    words = ["just", "another", "test", "to", "complete"]
+    for word in words:
+        lst.append(word)
+
+    # remove in the middle
+    words.remove("test")
+    lst.remove("test")
+
+    words.reverse()
+    for word, node in zip(words, lst):
+        print(f"After 'test' removal: {node.data}")
+        assert word == node.data
+        
+    # remove at the beginnig
+    words.remove("complete")
+    lst.remove("complete")
+
+    for word, node in zip(words, lst):
+        print(f"After 'complete' removal: {node.data}")
+        assert word == node.data
+
+    # remove at the end
+    words.remove("just")
+    lst.remove("just")
+
+    for word, node in zip(words, lst):
+        print(f"After 'just' removal: {node.data}")
+        assert word == node.data
