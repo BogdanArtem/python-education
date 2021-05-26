@@ -17,4 +17,4 @@ class Queue:
 
     def dequeue(self):
         """Remove element according to FIFO"""
-        return self.data.popleft()
+        return self.data.pop_tail()
