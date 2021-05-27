@@ -127,14 +127,12 @@ class LinkedList:
                 # Get reference to previous and next nodes
                 previous = node.previous
                 _next = node.next
-
-                # Make them reference each other 
+                # Make them reference each other
                 if previous is None:
                     # Change tail reference if tail is removed
-                     self.tail = _next
+                    self.tail = _next
                 else:
                     previous.next = _next
-
                 if _next is None:
                     # Change head reference if head is removed
                     self.head = previous

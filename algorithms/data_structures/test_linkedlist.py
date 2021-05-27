@@ -88,7 +88,7 @@ def test_linked_list_removal():
     for word, node in zip(words, lst):
         print(f"After 'test' removal: {node.data}")
         assert word == node.data
-        
+
     # remove at the beginnig
     words.remove("complete")
     lst.remove("complete")
@@ -115,8 +115,9 @@ def test_linked_list_removal():
     # remove non-existent element
     with pytest.raises(ValueError):
         lst2.remove("I don't exist")
-        
+
 def test_find_in_linked_list():
+    """Check if search works"""
     lst1 = LinkedList()
 
     lst1.append(5)
@@ -124,4 +125,3 @@ def test_find_in_linked_list():
     lst1.append(10)
 
     assert 5 in lst1
-

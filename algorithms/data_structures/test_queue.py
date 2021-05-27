@@ -1,8 +1,8 @@
 """Tests for queue implementation"""
 
 
-import pytest
 from queue import Queue
+import pytest
 
 
 def test_queue():

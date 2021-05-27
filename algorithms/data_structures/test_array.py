@@ -1,16 +1,17 @@
 """Array tests"""
 
-import pytest
+
 from array import Array
+import pytest
 
 
 def test_getitem_setitem():
     """Check retrieving and inserting information to array"""
     lst = Array(5)
 
-    assert lst[0] == None
+    assert lst[0] is None
     with pytest.raises(IndexError):
-        assert lst[100] == None
+        assert lst[100] is None
 
     lst[0] = "zero"
     lst[4] = "five"

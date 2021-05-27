@@ -1,6 +1,13 @@
+"""Implementation of array
+
+This module is created to practice array implementation"""
+
+
 from array import Array
 
+
 class DynamicArray(Array):
+    """Array with automatic resizing after filling 75% of volume"""
     def __init__(self, size):
         super().__init__(size)
         self.num_items = 0

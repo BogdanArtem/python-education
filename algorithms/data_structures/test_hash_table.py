@@ -4,6 +4,7 @@ import pytest
 from hash_table import HashTable
 
 def test_hash_table():
+    """Check inserition and deletion"""
     table = HashTable(10)
 
     table.insert('just')
@@ -12,7 +13,7 @@ def test_hash_table():
 
     assert "just" in table
     table.delete('just')
-    assert "just" not in table 
+    assert "just" not in table
 
     with pytest.raises(ValueError):
         table.delete('just')

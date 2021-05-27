@@ -1,4 +1,10 @@
+"""Implementation of array
+
+This module is created to practice array implementation"""
+
+
 class Array:
+    """Java-like array where none represents empty cell"""
     def __init__(self, size):
         self.size = size
         self.data = [None] * size
@@ -23,6 +29,3 @@ class Array:
             del self.count
             raise StopIteration
         return self.data[index]
-
-    def __len__(self):
-        return self.size

@@ -1,10 +1,12 @@
 """Binary tree tests"""
 
-import pytest
+
 from dynamic_array import DynamicArray
 
+
 def test_dynamic_array():
-    arr = DynamicArray(3)   
+    """Test methods of array"""
+    arr = DynamicArray(3)
 
     arr[0] = "this"
     arr[1] = "is"
@@ -21,13 +23,3 @@ def test_dynamic_array():
 
     arr[1] = "text"
     assert arr.num_items == 5
-
-
-
-
-
-
-
-
-
-    
