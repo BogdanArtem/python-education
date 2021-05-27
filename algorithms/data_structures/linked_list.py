@@ -1,4 +1,4 @@
-"""Implementation of linked list
+"""Implementation of double linked list
 
 This module is created to practice data structures"""
 
@@ -55,10 +55,18 @@ class LinkedList:
         self.node_memo = self.head
         return self
 
+    def __contains__(self, value):
+        for node in self:
+            if node.data == value:
+                return True
+        return False
+
+    def __repr__(self):
+        result = ", ".join((str(item.data) for item in self))
+        return "<" + result + ">"
+
     def __next__(self):
         """Travese list nodes from HEAD to TAIL"""
-        #TODO: Linked list of None?
-        #TODO: Empty list iteration
         if self.node_memo is None:
             raise StopIteration
         value = self.node_memo
@@ -113,7 +121,7 @@ class LinkedList:
         return result
 
     def remove(self, value):
-        """Traverse values in linked list and delete fist node that matches value"""
+        """Traverse values in linked list HEAD to TAIL and delete fist node that matches value"""
         for node in self:
             if node.data == value:
                 # Get reference to previous and next nodes

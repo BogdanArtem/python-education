@@ -115,3 +115,13 @@ def test_linked_list_removal():
     # remove non-existent element
     with pytest.raises(ValueError):
         lst2.remove("I don't exist")
+        
+def test_find_in_linked_list():
+    lst1 = LinkedList()
+
+    lst1.append(5)
+    lst1.append(3)
+    lst1.append(10)
+
+    assert 5 in lst1
+
