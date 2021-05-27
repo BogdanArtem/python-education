@@ -10,8 +10,8 @@ def graph():
 
         2 ---  4
       /  \   /
-    1 ---  3 
-    
+    1 ---  3
+
     """
     graph = Graph(5)
 
@@ -29,6 +29,7 @@ def graph():
     return graph
 
 def test_connections(graph):
+    """Check the presence of connections"""
     assert graph.has_connection(2, 3) is True
     assert graph.has_connection(3, 2) is True
     assert graph.has_directed_connection(2, 3) is True
@@ -52,7 +53,7 @@ def test_connections(graph):
     assert graph.has_connection(4, 1) is False
 
 def test_connections_removal(graph):
-
+    """Check if nodes with connections are removed"""
     graph.remove_connection(2, 3)
     assert graph.has_connection(3, 2) is False
 
@@ -60,3 +61,13 @@ def test_connections_removal(graph):
 
     assert graph.has_connection(1, 2) is True
     assert graph.has_connection(2, 4) is True
+
+def test_nodes_removal(graph):
+    """Check if nodes are removed"""
+    graph.delete_node(3)
+
+    assert graph.has_connection(2, 1) is True
+    assert graph.has_connection(2, 4) is True
+    assert graph.has_connection(1, 3) is False
+    assert graph.has_connection(3, 4) is False
+    assert graph.has_connection(1, 4) is False

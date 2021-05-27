@@ -13,14 +13,10 @@ class Graph:
         self.connections = DynamicArray(size)
         self.values = DynamicArray(size)
 
-    def __repr__(self):
-        result = f"Graph[connections: {self.num_nodes}"
-        for connection in self.connections:
-            result += str(connection) + "\n"
-        result += "]"
-        return result
-
     def add_node(self, node_idx, value):
+        """Add node using array index"""
+        if not self._valid_index(node_idx):
+            raise IndexError("Index does not exis")
         if self.values[node_idx] is None:
             self.connections[node_idx] = LinkedList()
             self.values[node_idx] = value
@@ -28,11 +24,18 @@ class Graph:
             raise ValueError("Node is already present at this index")
 
     def delete_node(self, node_idx):
-        if self.values[node_idx] is not None:
-            self.connections[node_idx] = None
-            self.values[node_idx] = None
-        else:
+        """Remove node and all connections to it"""
+        if not self._valid_index(node_idx):
+            raise IndexError("Index does not exis")
+        if self.values[node_idx] is None:
             raise ValueError("Node does not exist")
+
+        self.connections[node_idx] = None
+        self.values[node_idx] = None
+        # Delete all connections to node
+        for node in self.connections:
+            if node is not None and node_idx in node:
+                node.remove(node_idx)
 
     def add_connection(self, index_1, index_2):
         """Create directed connection between nodes of graph"""
@@ -52,7 +55,11 @@ class Graph:
 
     def has_directed_connection(self, index_1, index_2):
         """Check if node index1 has directed connection to index2"""
-        return index_2 in self.connections[index_1]
+        if not self._valid_index(index_1, index_2):
+            raise IndexError("Index does not exits")
+        node = self.connections[index_1]
+        # Check if node exists
+        return True if node and index_2 in node else False
 
     def has_connection(self, index_1, index_2):
         """Check is 2 contiguous nodes have connctions in 2 directions"""
