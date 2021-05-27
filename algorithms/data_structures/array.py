@@ -6,6 +6,9 @@ class Array:
     def __getitem__(self, index):
         return self.data[index]
 
+    def __len__(self):
+        return self.size
+
     def __setitem__(self, index, value):
         self.data[index] = value
 
