@@ -4,8 +4,7 @@ import pytest
 from linked_list import LinkedList
 
 
-def test_linked_list_pop_append():
-    """Add the 'The quick brown fox jumps over the lazy dog' to linked list"""
+def test_pop_append():
     lst = LinkedList()
 
     lst.append("first")
@@ -18,22 +17,21 @@ def test_linked_list_pop_append():
     assert lst.pop() == "second"
     assert lst.pop() == "first"
 
-def test_linked_list_prepend_popleft():
-    """Add the 'The quick brown fox jumps over the lazy dog' to linked list"""
+def test_prepend_popleft():
     lst = LinkedList()
 
-    lst.append_tail("first")
-    lst.append_tail("second")
-    lst.append_tail("third")
-    lst.append_tail("fourth")
+    lst.prepend("first")
+    lst.prepend("second")
+    lst.prepend("third")
+    lst.prepend("fourth")
 
-    assert lst.pop_tail() == "fourth"
-    assert lst.pop_tail() == "third"
-    assert lst.pop_tail() == "second"
-    assert lst.pop_tail() == "first"
+    assert lst.popleft() == "fourth"
+    assert lst.popleft() == "third"
+    assert lst.popleft() == "second"
+    assert lst.popleft() == "first"
 
 
-def test_linked_list_append_popleft():
+def test_append_popleft():
     """Add the 'The quick brown fox jumps over the lazy dog' to linked list"""
     lst = LinkedList()
 
@@ -42,29 +40,28 @@ def test_linked_list_append_popleft():
     lst.append("third")
     lst.append("fourth")
 
-    assert lst.pop_tail() == "first"
-    assert lst.pop_tail() == "second"
-    assert lst.pop_tail() == "third"
-    assert lst.pop_tail() == "fourth"
+    assert lst.popleft() == "first"
+    assert lst.popleft() == "second"
+    assert lst.popleft() == "third"
+    assert lst.popleft() == "fourth"
 
 
-def test_linked_list_remove_empty():
+def test_delete_empty():
     """Test that list raises error if pop or popleft are called"""
     lst = LinkedList()
-    with pytest.raises(TypeError):
-        lst.pop_tail()
+    with pytest.raises(IndexError):
+        lst.popleft()
 
-    with pytest.raises(TypeError):
+    with pytest.raises(IndexError):
         lst.pop()
 
-def test_linked_list_iter():
+def test_iter():
     """Test iterator of linked list"""
     lst = LinkedList()
     words = ["just", "another", "test", "to", "complete"]
     for word in words:
         lst.append(word)
 
-    words.reverse()
     for word, node in zip(words, lst):
         assert word == node.data
 
@@ -73,55 +70,80 @@ def test_linked_list_iter():
     for node in lst2:
         print(node.data)
 
-def test_linked_list_removal():
+def test_delete():
     """Check revoval of items from linked list"""
     lst = LinkedList()
     words = ["just", "another", "test", "to", "complete"]
     for word in words:
         lst.append(word)
 
-    # remove in the middle
+    # delete in the middle
     words.remove("test")
-    lst.remove("test")
+    lst.delete(2)
 
-    words.reverse()
     for word, node in zip(words, lst):
         print(f"After 'test' removal: {node.data}")
         assert word == node.data
 
-    # remove at the beginnig
+    # delete at the beginnig
     words.remove("complete")
-    lst.remove("complete")
+    lst.delete(3)
 
     for word, node in zip(words, lst):
         print(f"After 'complete' removal: {node.data}")
         assert word == node.data
 
-    # remove at the end
+    # delete at the end
     words.remove("just")
-    lst.remove("just")
+    lst.delete(0)
 
     for word, node in zip(words, lst):
         print(f"After 'just' removal: {node.data}")
         assert word == node.data
 
-    # remove the only element
+    # delete the only element
     lst2 = LinkedList()
     lst2.append("just a value")
-    lst2.remove("just a value")
+    lst2.delete(0)
     assert lst2.head is None
     assert lst2.tail is None
 
-    # remove non-existent element
-    with pytest.raises(ValueError):
-        lst2.remove("I don't exist")
+    # delete non-existent element
+    with pytest.raises(IndexError):
+        lst2.delete(100)
 
-def test_find_in_linked_list():
+def test_contains():
     """Check if search works"""
-    lst1 = LinkedList()
+    lst = LinkedList()
 
-    lst1.append(5)
-    lst1.append(3)
-    lst1.append(10)
+    lst.append(5)
+    lst.append(3)
+    lst.append(10)
+    lst.append(100)
 
-    assert 5 in lst1
+    assert 5 in lst
+    assert 1 not in lst
+    assert 100 in lst
+
+def test_lookup():
+    """Check finding values by index"""
+    lst = LinkedList()
+    lst.append(5)
+    lst.append(3)
+    lst.append(10)
+
+    assert lst.lookup(0) == 5
+    assert lst.lookup(2) == 10
+
+
+def test_insert():
+    lst = LinkedList()
+    lst.append(5)
+    lst.append(3)
+    lst.append(10)
+    lst.append(100)
+    lst.insert(0, 1)
+    lst.insert(2, 17)
+
+    assert lst.lookup(0) == 1
+    assert lst.lookup(2) == 17
