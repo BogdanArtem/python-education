@@ -16,5 +16,9 @@ class Queue:
         self.data.append(value)
 
     def dequeue(self):
-        """Remove element according to FIFO"""
-        return self.data.pop_tail()
+        """Remove and return values according to FIFO"""
+        return self.data.popleft()
+
+    def peek(self):
+        """Return the last element according to FIFO"""
+        return self.data.head.data

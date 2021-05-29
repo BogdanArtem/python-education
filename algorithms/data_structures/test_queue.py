@@ -23,5 +23,17 @@ def test_queue():
 def test_empty_dequeue():
     """Test that list raises error if pop or popleft are called"""
     lst = Queue()
-    with pytest.raises(TypeError):
+    with pytest.raises(IndexError):
         lst.dequeue()
+
+def test_peek():
+    """Test peek"""
+    lst1 = Queue()
+
+    lst1.enqueue("first")
+    lst1.enqueue("second")
+    lst1.enqueue("third")
+    lst1.enqueue("fourth")
+
+    assert lst1.peek() == "first"
+    assert lst1.peek() == "first"
