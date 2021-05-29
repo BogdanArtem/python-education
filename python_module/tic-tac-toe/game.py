@@ -2,6 +2,13 @@
 
 
 from collections import deque
+import logging
+
+
+logging.basicConfig(filename='tic-tac-toe.log',
+                    format='%(asctime)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S',
+                    level=logging.INFO)
 
 
 class Game:
@@ -13,6 +20,7 @@ class Game:
         self.board = [[' '] * size for _ in range(size)]
         self.players = []
         self._game_over = False
+        self._draw = False
         self.turns = 0
 
     def __repr__(self):
@@ -29,6 +37,16 @@ class Game:
         return render
 
     @property
+    def draw(self):
+        """Check if game is over"""
+        return self._draw
+
+    @draw.setter
+    def draw(self, value: bool):
+        """Change state of game over"""
+        self._draw = value
+
+    @property
     def game_over(self):
         """Check if game is over"""
         return self._game_over
@@ -39,12 +57,24 @@ class Game:
         self._game_over = value
 
     def start(self):
-        """Start the game and play it until game over"""
+        """Start the game and play it until draw or game over"""
         while True:
             if self.game_over:
+                logging.info("%s won %s", self.players[1], self.players[0])
+                print(f"Congradulations, {self.players[1].name}! You won!")
+                break
+            if self.draw:
+                print("This is draw!")
+                logging.info("Draw for %s and %s ", self.players[0], self.players[1])
                 break
             self.players[0].make_move(self)
             if self.game_over:
+                logging.info("%s won %s", self.players[0], self.players[1])
+                print(f"Congradulations, {self.players[0].name}! You won!")
+                break
+            if self.draw:
+                print("This is draw!")
+                logging.info("Draw for %s and %s ", self.players[0], self.players[1])
                 break
             self.players[1].make_move(self)
 
@@ -91,8 +121,7 @@ class Game:
 
         if self._check_draw():
             print(self)
-            print("This is draw!")
-            self.game_over = True
+            self.draw = True
 
     def _check_draw(self):
         return True if self.turns == (self.board_size)**2 and not self.game_over else False
