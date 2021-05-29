@@ -7,14 +7,18 @@ def test_hash_table():
     """Check inserition and deletion"""
     table = HashTable(10)
 
-    table.insert('just')
-    table.insert('another')
-    table.insert('test')
+    table.insert('Alex', 3545)
+    table.insert('Sam', 1000)
+    table.insert('John', 1999)
+    table.insert('Max', 9999)
+    table.insert('Nick', 0)
 
-    assert "just" in table
-    table.delete('just')
-    assert "just" not in table
+    assert table.lookup("John") == 1999
+    assert table.lookup("Max") == 9999
 
-    with pytest.raises(ValueError):
-        table.delete('just')
+    table.delete('Nick')
+    assert table.lookup("Nick") == None
+
+    with pytest.raises(KeyError):
+        table.delete('Nick')
     
