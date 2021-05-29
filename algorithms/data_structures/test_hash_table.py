@@ -22,3 +22,13 @@ def test_hash_table():
     with pytest.raises(KeyError):
         table.delete('Nick')
     
+def test_contains():
+    table = HashTable(10)
+    table.insert('Alex', 3545)
+    table.insert('Sam', 1000)
+    table.insert('John', 1999)
+    table.insert('Max', 9999)
+    table.insert('Nick', 0)
+
+    assert "Alex" in table
+    assert "Nick" in table

@@ -35,9 +35,9 @@ class HashTable:
 
     def __contains__(self, key):
         """Check if key is in table"""
-        cell = self._get_cell(value)
+        cell = self._get_cell(key)
         for node in cell:
-            if value == node.data:
+            if key == node.data.key:
                 return True
         return False
 
