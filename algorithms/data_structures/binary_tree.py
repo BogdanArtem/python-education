@@ -27,7 +27,7 @@ class BinaryTree:
             match = self._insert_match,
             value = value)
 
-    def find_node(self, value):
+    def lookup(self, value):
         """Return node that corresponds to the value"""
         return self._traverse_tree(
             side = self._find_on_the_side,
@@ -53,7 +53,7 @@ class BinaryTree:
         side_node = getattr(self, side)
         if side_node is None:
             raise ValueError("Can't find the element")
-        return side_node.find_node(value)
+        return side_node.lookup(value)
 
     def _delete_on_the_side(self, side, value):
         side_node = getattr(self, side)
