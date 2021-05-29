@@ -16,5 +16,9 @@ class Stack:
         self.data.append(value)
 
     def pop(self):
-        """Return values according to FILO"""
+        """Remove and return values according to FILO"""
         return self.data.pop()
+
+    def peek(self):
+        """Return the last value according to FILO"""
+        return self.data.tail.data
