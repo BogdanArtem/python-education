@@ -19,12 +19,28 @@ class Player:
         """Change state of game's board"""
         print(game)
         print(f"Hi, {self.name} aka '{self.sign}'")
-        x_point, y_point = [int(x) for x in input("Enter your move as 'X Y': ").split()]
+        
+        x_point, y_point = self.get_input()
+        while not game.move_is_valid(x_point, y_point):
+            x_point, y_point = self.get_input()
+
         game.change_board(x_point, y_point, self.sign)
         if game.game_over is True:
             print(game)
             logging.info("Player %s won", self.name)
             print(f"Congradulations, {self.name}! You won!")
+
+    def get_input(self):
+        try:
+            x_point, y_point = [int(x) for x in input("Enter your move as 'X Y': ").split()]
+            return x_point, y_point
+        except ValueError:
+            print("Please, enter values as 'X Y'")
+            return self.get_input()
+        except TypeError:
+            print("Please, enter values as 'X Y'")
+            return self.get_input()
+
 
     @property
     def name(self):

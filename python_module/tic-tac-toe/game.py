@@ -11,7 +11,7 @@ class Game:
         self.streak_size = streak_size
         self.board_size = size
         self.board = [[' '] * size for _ in range(size)]
-        self.symbols = ['X', 'O']
+        self.players = []
         self._game_over = False
         self.turns = 0
 
@@ -38,17 +38,41 @@ class Game:
         """Change state of game over"""
         self._game_over = value
 
-    def change_board(self, x_point: int, y_point: int, sign: str):
-        """Edit state of the board using x, y and sing.
+    def start(self):
+        """Start the game and play it until game over"""
+        while True:
+            if self.game_over:
+                break
+            self.players[0].make_move(self)
+            if self.game_over:
+                break
+            self.players[1].make_move(self)
 
-        Raise ValueError in case the board sector is filled"""
-        if self.board[x_point][y_point] != " ":
-            raise ValueError(f"Sector [{x_point}] [{y_point}] is already filled")
-        
+    def change_board(self, x_point: int, y_point: int, sign: str):
+        """Edit state of the board using x, y and sing."""
         self.board[x_point][y_point] = sign
         self.turns += 1
-
         self._check_in_all_dimensions()
+
+    def move_is_valid(self, x_point: int, y_point: int):
+        """Check if x y move is valid for the board"""
+        try:
+            self.board[x_point][y_point]
+        except IndexError:
+            print(f"Sector [{x_point}] [{y_point}] does not exist")
+            return False
+
+        if self.board[x_point][y_point] != " ":
+            print(f"Sector [{x_point}] [{y_point}] is already filled")
+            return False
+        return True
+
+    def add_player(self, player):
+        """Add player to the game"""
+        if len(self.players) < 2:
+            self.players.append(player)
+        else:
+            print("The game is full")
 
     def _check_in_all_dimensions(self):
         """Check for endgame in rows and diagonals.
@@ -101,8 +125,8 @@ class Game:
 
     def _check_game_over(self, sequence):
         """Checks if one of sides has won"""
-        win1 = [self.symbols[0]] * self.streak_size
-        win2 = [self.symbols[1]] * self.streak_size
+        win1 = [self.players[0].sign] * self.streak_size
+        win2 = [self.players[1].sign] * self.streak_size
         sequence = list(sequence)
         if sequence in (win1, win2):
             self.game_over = True

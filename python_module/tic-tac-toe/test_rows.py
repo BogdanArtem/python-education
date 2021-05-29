@@ -1,4 +1,5 @@
 from game import Game
+from player import Player
 import pytest
 
 @pytest.fixture
@@ -99,63 +100,90 @@ def board10():
         ['O', 'O', 'X', 'X', 'O'],
     ]
 
+@pytest.fixture
+def player1():
+    return Player(name="Sam", sign="X")
 
-def test_rows_game_over1(board1):
+@pytest.fixture
+def player2():
+    return Player(name="Nick", sign="O")
+
+def test_rows_game_over1(board1, player1, player2):
     new_game = Game(size=3, streak_size=3)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board1
     new_game._check_in_all_dimensions()
     assert new_game.game_over == False
 
-def test_rows_game_over2(board2):
+def test_rows_game_over2(board2, player1, player2):
     new_game = Game(size=3, streak_size=3)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board2
     new_game._check_in_all_dimensions()
     assert new_game.game_over == True
 
-def test_rows_game_over3(board3):
+def test_rows_game_over3(board3, player1, player2):
     new_game = Game(size=3, streak_size=3)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board3
     new_game._check_in_all_dimensions()
     assert new_game.game_over == True
 
-def test_rows_game_over4(board4):
+def test_rows_game_over4(board4, player1, player2):
     new_game = Game(size=3, streak_size=3)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board4
     new_game._check_in_all_dimensions()
     assert new_game.game_over == False
 
-def test_rows_game_over5(board5):
+def test_rows_game_over5(board5, player1, player2):
     new_game = Game(size=4, streak_size=3)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board5
     new_game._check_in_all_dimensions()
     assert new_game.game_over == False
 
-def test_rows_game_over6(board6):
+def test_rows_game_over6(board6, player1, player2):
     new_game = Game(size=4, streak_size=3)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board6
     new_game._check_in_all_dimensions()
     assert new_game.game_over == True
 
-def test_rows_game_over7(board7):
+def test_rows_game_over7(board7, player1, player2):
     new_game = Game(size=4, streak_size=4)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board7
     new_game._check_in_all_dimensions()
     assert new_game.game_over == True
 
-def test_rows_game_over8(board8):
+def test_rows_game_over8(board8, player1, player2):
     new_game = Game(size=4, streak_size=4)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board8
     new_game._check_in_all_dimensions()
     assert new_game.game_over == False
 
-def test_rows_game_over9(board9):
+def test_rows_game_over9(board9, player1, player2):
     new_game = Game(size=5, streak_size=3)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board9
     new_game._check_in_all_dimensions()
     assert new_game.game_over == True
 
-def test_rows_game_over10(board10):
+def test_rows_game_over10(board10, player1, player2):
     new_game = Game(size=5, streak_size=3)
+    new_game.add_player(player1)
+    new_game.add_player(player2)
     new_game.board = board10
     new_game._check_in_all_dimensions()
     assert new_game.game_over == False
