@@ -1,5 +1,6 @@
+"""Module to practice quicksort implementation"""
+
 from typing import Any, Sequence
-from random import choice
 
 def quick_sort(seq: Sequence[Any]):
     """Sort values inside sequence object.
@@ -7,7 +8,7 @@ def quick_sort(seq: Sequence[Any]):
     This agorithm assumes that sequence items are comparable
 
     sequence: Sequence
-        Obect that implements Sequence methods
+        Object that implements Sequence methods
 
      """
     if not seq:
