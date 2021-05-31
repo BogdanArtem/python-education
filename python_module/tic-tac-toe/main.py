@@ -9,10 +9,26 @@ from game import Game
 player1 = Player(name="Default1", sign="X")
 player2 = Player(name="Default2", sign="O")
 
+def get_player(num):
+    """Get user input"""
+    p_inp = False
+    while not p_inp:
+        try:
+            name, sign = input(f"Enter the name of player{num} \
+                and it's sign, e.g. 'Alex X': ").split()
+            if len(sign) > 1:
+                raise ValueError
+            p_inp = True
+        except ValueError:
+            print("Please, enter valid name and sign")
+    return name, sign
+
+
 def custom_players():
     """Change default players"""
-    name1, sign1 = input("Enter the name of player1 and it's sign, e.g. 'Alex X': ").split()
-    name2, sign2 = input("Enter the name of player1 and it's sign, e.g. 'Alex X': ").split()
+
+    name1, sign1 = get_player(1)
+    name2, sign2 = get_player(2)
 
     global player1
     global player2

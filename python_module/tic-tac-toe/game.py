@@ -3,9 +3,10 @@
 
 from collections import deque
 import logging
+from logs_reader import LogsReader
 
 
-logging.basicConfig(filename='tic-tac-toe.log',
+logging.basicConfig(filename='./tic-tac-toe.log',
                     format='%(asctime)s - %(message)s',
                     datefmt='%d-%b-%y %H:%M:%S',
                     level=logging.INFO)
@@ -58,9 +59,15 @@ class Game:
 
     def start(self):
         """Start the game and play it until draw or game over"""
+        lr = LogsReader()
+        lr.read()
         while True:
             if self.game_over:
-                logging.info("%s won %s", self.players[1], self.players[0])
+                count = lr.get_count(self.players[1].name, self.players[0].name)
+                print(count)
+
+                logging.info("%s won %s. Count %d:%d", self.players[1],\
+                     self.players[0], count[0] + 1, count[1])
                 print(f"Congradulations, {self.players[1].name}! You won!")
                 break
             if self.draw:
@@ -69,7 +76,10 @@ class Game:
                 break
             self.players[0].make_move(self)
             if self.game_over:
-                logging.info("%s won %s", self.players[0], self.players[1])
+                count = lr.get_count(self.players[0].name, self.players[1].name)
+                print(count)
+                logging.info("%s won %s. Count %d:%d", self.players[0], self.players[1], \
+                    count[0] + 1, count[1])
                 print(f"Congradulations, {self.players[0].name}! You won!")
                 break
             if self.draw:
