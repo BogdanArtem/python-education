@@ -8,66 +8,56 @@ def graph():
     """
     Graph schema
 
-        2 ---  4
+        1 ---  3
       /  \   /
-    1 ---  3
+    0 ---  2
 
     """
-    graph = Graph(5)
-
-    graph.add_node(node_idx = 1, value = 45)
-    graph.add_node(node_idx = 2, value = 30)
-    graph.add_node(node_idx = 3, value = 2)
-    graph.add_node(node_idx = 4, value = 70)
-
-    graph.add_connection(1, 2)
-    graph.add_connection(1, 3)
-    graph.add_connection(2, 3)
-    graph.add_connection(2, 4)
-    graph.add_connection(4, 3)
-
+    graph = Graph()
+    graph.insert(1, 2)
+    graph.insert(0, 2, 3)
+    graph.insert(0, 1, 3)
+    graph.insert(1, 2)
     return graph
 
-def test_connections(graph):
+def test_lookup(graph):
     """Check the presence of connections"""
-    assert graph.has_connection(2, 3) is True
-    assert graph.has_connection(3, 2) is True
-    assert graph.has_directed_connection(2, 3) is True
-    assert graph.has_directed_connection(3, 2) is False
+    node1 = graph.lookup(0)
+    assert str(node1) == "<1, 2>"
 
-    assert graph.has_connection(3, 4) is True
-    assert graph.has_connection(4, 3) is True
-    assert graph.has_directed_connection(4, 3) is True
-    assert graph.has_directed_connection(3, 4) is False
+    node2 = graph.lookup(3)
+    assert str(node2) == "<1, 2>"
 
-    assert graph.has_connection(1, 2) is True
-    assert graph.has_connection(2, 1) is True
+    node3 = graph.lookup(1)
+    assert str(node3) == "<0, 2, 3>"
 
-    assert graph.has_connection(2, 4) is True
-    assert graph.has_connection(4, 2) is True
+def test_insert(graph):
+    # Insert graph with connections to 0 and 2
+    graph.insert(0, 2)
+    node = graph.lookup(4)
+    assert str(node) == "<0, 2>"
 
-    assert graph.has_connection(1, 3) is True
-    assert graph.has_connection(3, 1) is True
+def test_delete0(graph):
+    """Graph<<1, 2>, <0, 2, 3>, <0, 1, 3>, <1, 2>>"""
+    graph.delete(0)
+    print(graph)
+    assert str(graph) == "Graph<<2, 3>, <1, 3>, <1, 2>>"
 
-    assert graph.has_connection(1, 4) is False
-    assert graph.has_connection(4, 1) is False
+def test_delete1(graph):
+    """Graph<<1, 2>, <0, 2, 3>, <0, 1, 3>, <1, 2>>"""
+    graph.delete(1)
+    print(graph)
+    assert str(graph) == "Graph<<2>, <0, 3>, <2>>"
 
-def test_connections_removal(graph):
-    """Check if nodes with connections are removed"""
-    graph.remove_connection(2, 3)
-    assert graph.has_connection(3, 2) is False
+def test_delete2(graph):
+    """Graph<<1, 2>, <0, 2, 3>, <0, 1, 3>, <1, 2>>"""
+    graph.delete(2)
+    print(graph)
+    assert str(graph) == "Graph<<1>, <0, 3>, <1>>"
 
-    graph.remove_connection(4, 3)
 
-    assert graph.has_connection(1, 2) is True
-    assert graph.has_connection(2, 4) is True
-
-def test_nodes_removal(graph):
-    """Check if nodes are removed"""
-    graph.delete_node(3)
-
-    assert graph.has_connection(2, 1) is True
-    assert graph.has_connection(2, 4) is True
-    assert graph.has_connection(1, 3) is False
-    assert graph.has_connection(3, 4) is False
-    assert graph.has_connection(1, 4) is False
+def test_delete3(graph):
+    """Graph<<1, 2>, <0, 2, 3>, <0, 1, 3>, <1, 2>>"""
+    graph.delete(3)
+    print(graph)
+    assert str(graph) == "Graph<<1, 2>, <0, 2>, <0, 1>>"
