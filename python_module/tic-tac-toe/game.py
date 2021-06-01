@@ -3,6 +3,7 @@
 
 from collections import deque
 import logging
+from typing import List, Tuple
 from logs_reader import LogsReader
 
 
@@ -17,7 +18,7 @@ class Game:
 
     def __init__(self, size=3, streak_size=3):
         self.streak_size = streak_size
-        self.board_size = size
+        self._board_size = size
         self.board = [[' '] * size for _ in range(size)]
         self.players = []
         self._game_over = False
@@ -36,6 +37,10 @@ class Game:
         render += "".join([" -- " for _ in row]) + "\n"
         render += "".join([f"  {num} " for num, _ in enumerate(self.board)])
         return render
+
+    @property
+    def board_size(self):
+        return self._board_size
 
     @property
     def draw(self):
@@ -94,18 +99,22 @@ class Game:
         self.turns += 1
         self._check_in_all_dimensions()
 
+    def valid_moves(self) -> List[Tuple]:
+        """Return list of tuples with all valid moves for the game"""
+        moves = []
+        for x, row in enumerate(self.board):
+            for y, element in enumerate(row):
+                if element == " ":
+                    moves.append((x, y))
+        return moves
+
     def move_is_valid(self, x_point: int, y_point: int):
         """Check if x y move is valid for the board"""
-        try:
-            self.board[x_point][y_point]
-        except IndexError:
-            print(f"Sector [{x_point}] [{y_point}] does not exist")
+        if (x_point, y_point) in self.valid_moves():
+            return True
+        else:
+            print("Please, enter valid coordinates for your move")
             return False
-
-        if self.board[x_point][y_point] != " ":
-            print(f"Sector [{x_point}] [{y_point}] is already filled")
-            return False
-        return True
 
     def add_player(self, player):
         """Add player to the game"""
@@ -134,7 +143,7 @@ class Game:
             self.draw = True
 
     def _check_draw(self):
-        return True if self.turns == (self.board_size)**2 and not self.game_over else False
+        return True if self.turns == (self._board_size) ** 2 and not self.game_over else False
 
     def _check_diagonals(self, board):
         """Traverse matrix diagonally.
