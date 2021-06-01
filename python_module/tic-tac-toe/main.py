@@ -1,13 +1,12 @@
 """Tic-Tac-Toe game with arbitrary size of board and size of streak"""
 
-
 import sys
 from player import Player
 from game import Game
 
-
 player1 = Player(name="Default1", sign="X")
 player2 = Player(name="Default2", sign="O")
+
 
 def get_player(num):
     """Get user input"""
@@ -24,6 +23,20 @@ def get_player(num):
     return name, sign
 
 
+def get_game():
+    """Get user input"""
+    p_inp = False
+    while not p_inp:
+        try:
+            size, streak = [int(x) for x in input(f"Enter the size of the board and streak size like '5 3': ").split()]
+            if streak > size:
+                raise ValueError
+            p_inp = True
+        except ValueError:
+            print("Please, enter valid name and sign")
+    return size, streak
+
+
 def custom_players():
     """Change default players"""
 
@@ -37,14 +50,15 @@ def custom_players():
     print("Names changed \n")
     main()
 
+
 def new_game():
     """Start new game with adaptive size of board"""
-    size, streak_size = [int(x) for x in \
-        input("Enter the size of the board and streak size like '5 3': ").split()]
+    size, streak_size = get_game()
     game = Game(size=size, streak_size=streak_size)
     game.add_player(player1)
     game.add_player(player2)
     game.start()
+
 
 def check_logs():
     """Print all logs form file"""
@@ -55,11 +69,13 @@ def check_logs():
         else:
             print(logs)
 
+
 def delete_logs():
     """Delete all logs from file"""
     with open('tic-tac-toe.log', 'w') as _:
         print("Logs are cleaned")
     main()
+
 
 def main():
     """Entrypoint for the game"""
@@ -81,7 +97,8 @@ def main():
         delete_logs()
     elif num == 5:
         sys.exit()
-    else: print("Wrong number!")
+    else:
+        print("Wrong number!")
 
 
 if __name__ == '__main__':
