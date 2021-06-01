@@ -2,10 +2,12 @@
 
 import sys
 from player import Player
+from minimax import AI
 from game import Game
 
 player1 = Player(name="Default1", sign="X")
 player2 = Player(name="Default2", sign="O")
+ai = AI(name="AI", sign="O")
 
 
 def get_player(num):
@@ -51,12 +53,12 @@ def custom_players():
     main()
 
 
-def new_game():
+def new_game(player):
     """Start new game with adaptive size of board"""
     size, streak_size = get_game()
     game = Game(size=size, streak_size=streak_size)
     game.add_player(player1)
-    game.add_player(player2)
+    game.add_player(player)
     game.start()
 
 
@@ -81,21 +83,24 @@ def main():
     """Entrypoint for the game"""
 
     print("1 - New game")
-    print("2 - Custom names")
-    print("3 - Check logs")
-    print("4 - Delete logs")
-    print("5 - Exit")
+    print("2 - New game with AI")
+    print("3 - Custom names")
+    print("4 - Check logs")
+    print("5 - Delete logs")
+    print("6 - Exit")
 
     num = int(input('\n-> '))
     if num == 1:
-        new_game()
+        new_game(player2)
     elif num == 2:
-        custom_players()
+        new_game(ai)
     elif num == 3:
-        check_logs()
+        custom_players()
     elif num == 4:
-        delete_logs()
+        check_logs()
     elif num == 5:
+        delete_logs()
+    elif num == 6:
         sys.exit()
     else:
         print("Wrong number!")
