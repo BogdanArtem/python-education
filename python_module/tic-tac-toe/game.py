@@ -23,7 +23,6 @@ class Game:
         self.players = []
         self._game_over = False
         self._draw = False
-        self.turns = 0
 
     def __repr__(self):
         """Game representation.
@@ -40,6 +39,7 @@ class Game:
 
     @property
     def board_size(self):
+        """Return board size"""
         return self._board_size
 
     @property
@@ -64,11 +64,11 @@ class Game:
 
     def start(self):
         """Start the game and play it until draw or game over"""
-        lr = LogsReader()
-        lr.read()
+        logs_reader = LogsReader()
+        logs_reader.read()
         while True:
             if self.game_over:
-                count = lr.get_count(self.players[1].name, self.players[0].name)
+                count = logs_reader.get_count(self.players[1].name, self.players[0].name)
                 print(count)
 
                 logging.info("%s won %s. Count %d:%d", self.players[1],\
@@ -76,15 +76,16 @@ class Game:
                 print(f"Congradulations, {self.players[1].name}! You won!")
                 break
             if self.draw:
+                print(self)
                 print("This is draw!")
                 logging.info("Draw for %s and %s ", self.players[0], self.players[1])
                 break
             self.players[0].make_move(self)
             if self.game_over:
-                count = lr.get_count(self.players[0].name, self.players[1].name)
-                print(count)
+                count = logs_reader.get_count(self.players[0].name, self.players[1].name)
                 logging.info("%s won %s. Count %d:%d", self.players[0], self.players[1], \
                     count[0] + 1, count[1])
+                print(self)
                 print(f"Congradulations, {self.players[0].name}! You won!")
                 break
             if self.draw:
@@ -96,7 +97,6 @@ class Game:
     def change_board(self, x_point: int, y_point: int, sign: str):
         """Edit state of the board using x, y and sing."""
         self.board[x_point][y_point] = sign
-        self.turns += 1
         self._check_in_all_dimensions()
 
     def valid_moves(self) -> List[Tuple]:
@@ -139,11 +139,12 @@ class Game:
             board_copy = list(zip(*board_copy[::-1]))
 
         if self._check_draw():
-            print(self)
             self.draw = True
 
     def _check_draw(self):
-        return True if self.turns == (self._board_size) ** 2 and not self.game_over else False
+        if self.valid_moves():
+            return False
+        return True
 
     def _check_diagonals(self, board):
         """Traverse matrix diagonally.
