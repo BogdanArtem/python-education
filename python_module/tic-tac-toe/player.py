@@ -11,6 +11,11 @@ class Player:
     def __repr__(self):
         return f"Player[name={self.name}, sign={self.sign}]"
 
+    def __eq__(self, other):
+        if isinstance(other, Player):
+            return self.name == other.name and self.sign == other.sign
+        return False
+
     def make_move(self, game):
         """Change state of game's board"""
         print(game)

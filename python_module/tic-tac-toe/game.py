@@ -21,11 +21,14 @@ class Game:
         self._board_size = size
         self.board = [[' '] * size for _ in range(size)]
         self.players = []
-        self._game_over = False
+        self._game_winner = None
         self._draw = False
 
     def __repr__(self):
-        """Game representation.
+        return str(self.board)
+
+    def __str__(self):
+        """Game as string.
 
         Row consists of 3 textual lines. Contiguous rows share 1 textual line"""
         render = ""
@@ -53,21 +56,21 @@ class Game:
         self._draw = value
 
     @property
-    def game_over(self):
+    def game_winner(self):
         """Check if game is over"""
-        return self._game_over
+        return self._game_winner
 
-    @game_over.setter
-    def game_over(self, value: bool):
+    @game_winner.setter
+    def game_winner(self, value: bool):
         """Change state of game over"""
-        self._game_over = value
+        self._game_winner = value
 
     def start(self):
         """Start the game and play it until draw or game over"""
         logs_reader = LogsReader()
         logs_reader.read()
         while True:
-            if self.game_over:
+            if self.game_winner:
                 count = logs_reader.get_count(self.players[1].name, self.players[0].name)
                 print(count)
 
@@ -81,7 +84,7 @@ class Game:
                 logging.info("Draw for %s and %s ", self.players[0], self.players[1])
                 break
             self.players[0].make_move(self)
-            if self.game_over:
+            if self.game_winner:
                 count = logs_reader.get_count(self.players[0].name, self.players[1].name)
                 logging.info("%s won %s. Count %d:%d", self.players[0], self.players[1], \
                     count[0] + 1, count[1])
@@ -159,7 +162,7 @@ class Game:
             diagonal_queue = deque(maxlen=self.streak_size)
             for j in range(0, count):
                 diagonal_queue.append(board[min(row, line) - j - 1][start_col + j])
-                if len(diagonal_queue) == self.streak_size and not self.game_over:
+                if len(diagonal_queue) == self.streak_size and not self.game_winner:
                     self._check_game_over(diagonal_queue)
 
     def _check_rows(self, board):
@@ -169,7 +172,7 @@ class Game:
             row_queue = deque(maxlen=self.streak_size)
             for element in row:
                 row_queue.append(element)
-                if len(row_queue) == self.streak_size and not self.game_over:
+                if len(row_queue) == self.streak_size and not self.game_winner:
                     self._check_game_over(row_queue)
 
     def _check_game_over(self, sequence):
@@ -177,5 +180,7 @@ class Game:
         win1 = [self.players[0].sign] * self.streak_size
         win2 = [self.players[1].sign] * self.streak_size
         sequence = list(sequence)
-        if sequence in (win1, win2):
-            self.game_over = True
+        if sequence == win1:
+            self.game_winner = self.players[0]
+        elif sequence == win2:
+            self.game_winner = self.players[1]
