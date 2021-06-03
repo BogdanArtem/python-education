@@ -72,10 +72,9 @@ class Game:
         while True:
             if self.game_winner:
                 count = logs_reader.get_count(self.players[1].name, self.players[0].name)
-                print(count)
-
-                logging.info("%s won %s. Count %d:%d", self.players[1],\
-                     self.players[0], count[0] + 1, count[1])
+                logging.info("%s won %s. Count %d:%d", self.players[1],
+                             self.players[0], count[0] + 1, count[1])
+                print(self)
                 print(f"Congradulations, {self.players[1].name}! You won!")
                 break
             if self.draw:
@@ -92,6 +91,7 @@ class Game:
                 print(f"Congradulations, {self.players[0].name}! You won!")
                 break
             if self.draw:
+                print(self)
                 print("This is draw!")
                 logging.info("Draw for %s and %s ", self.players[0], self.players[1])
                 break
@@ -115,9 +115,8 @@ class Game:
         """Check if x y move is valid for the board"""
         if (x_point, y_point) in self.valid_moves():
             return True
-        else:
-            print("Please, enter valid coordinates for your move")
-            return False
+        print("Please, enter valid coordinates for your move")
+        return False
 
     def add_player(self, player):
         """Add player to the game"""
