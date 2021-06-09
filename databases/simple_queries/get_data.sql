@@ -33,8 +33,14 @@ and created_at < '2020-12-31';
 /* Select all carts without orders */
 select cart_id from carts 
 except
-select distinct o.carts_cart_id from orders o 
+select distinct o.carts_cart_id from orders o;
 
+/* Task 2.4 */
+/* Select average price of finished orders */
+select avg(total) from orders where order_status_order_status_id = 4; -- 4 - finished
+
+/* Select max price in the 3rd quarter of 2020 (09-01 is not included) */
+select max(total) from orders where created_at between '2020-06-01' and '2020-09-01'
 
 
 
