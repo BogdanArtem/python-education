@@ -23,3 +23,12 @@ where city = 'city 17'
 select first_name, email
 from users
 	order by city, first_name
+
+/* Task 3.3 */
+/* Select names of groups grouped by count in descending order */
+select category_title, count(*)
+from categories c join products p
+	on p.category_id = c.category_id
+	group by category_title
+	order by count(*) desc
+	
