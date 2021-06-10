@@ -18,3 +18,8 @@ from
 	from potential_customers pc) as everyone
 where city = 'city 17'
 
+/* Task 3.2 */
+/* Select emails of all users ordered by cities and name*/
+select first_name, email
+from users
+	order by city, first_name
