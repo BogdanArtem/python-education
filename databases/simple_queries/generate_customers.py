@@ -1,11 +1,14 @@
 """This module generates SQL inserts for a customer table"""
 
-from faker import Faker
+
 import random
+from faker import Faker
+
 
 fake = Faker()
 num_of_entries = int(input("Enter number of records to generate?: "))
-template = "INSERT INTO potential_customers(id, email, name, surname, second_name, city) VALUES ({}, '{}', '{}','{}', '{}', '{}');\n"
+TEMPLATE = "INSERT INTO potential_customers \
+(id, email, name, surname, second_name, city) VALUES ({}, '{}', '{}','{}', '{}', '{}');\n"
 
 with open("fake_customer.sql", "w") as file:
     for num in range(num_of_entries):
@@ -23,5 +26,5 @@ with open("fake_customer.sql", "w") as file:
         # Used numbered cities to match the first task
         city = f"city {num}" #fake.city()
 
-        entry = template.format(num, email, name, surname, second_name, city)
+        entry = TEMPLATE.format(num, email, name, surname, second_name, city)
         file.write(entry)
