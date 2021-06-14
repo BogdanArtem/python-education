@@ -96,7 +96,7 @@ from users u
 	-- Add filtering of canceled orders
 	join order_status os
 	on os.order_status_id = o.order_status_order_status_id
-	where os.order_status_id != 4
+	where os.order_status_id != 5
 	--
 	group by user_id
 	order by gross desc
@@ -122,7 +122,7 @@ from users u
 	-- Filter only canceled users
 	join order_status os
 	on os.order_status_id = o.order_status_order_status_id
-	where os.order_status_id = 4
+	where os.order_status_id = 5
 	--
 	group by user_id
 	order by gross desc
