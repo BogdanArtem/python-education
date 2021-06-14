@@ -28,7 +28,7 @@ select * from products where category_id in (7, 11, 18)
 /* Select unfinished orders before 31.12.2020  */
 select * from orders where order_status_order_status_id in (1, 2, 3) 
 -- 1 - accepted; 2 - in progress; 3 - paid; 4 - finished; 5 - canceled
-and created_at < '2020-12-31'; 
+and created_at <= '2020-12-31'; 
 
 /* Select all carts without orders */
 select cart_id from carts 
