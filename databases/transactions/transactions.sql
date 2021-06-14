@@ -7,11 +7,9 @@ begin;
 	savepoint S2;
 	insert into carts values(99990, 30, 540, 600, now());
 	insert into orders values(99990, 99990, 2, 60, 540, now(), now());
+	-- undo inserts after S2
 	rollback to savepoint S2;
 commit;
-
--- select * from orders where order_id in (99990, 9999); -- id 99990 does not exist
--- select * from carts where cart_id in (99990, 9999); -- id 99990 does not exist
 
 
 /* DELETE: Full delition of customer, including carts and orders */
@@ -36,9 +34,34 @@ begin;
 commit;
 
 
-/* UPDATE: Rise product price by 10% and update total in Orders and Carts for unpaid orders (status 1 and 2) */
+/* UPDATE: Rise product price by 10% and update total, subtotal in Carts 
+ * and total in Orders for unpaid orders (status 1 and 2) */
+begin;
+	-- Raise price of product by 10%
+	update products
+	set price = price * 1.1;
 
+	
+	-- Update total and subtotal in carts
+	update carts as c
+	set total = (
+		select sum(price)
+		from products p join cart_product cp
+		on cp.products_product_id = p.product_id 
+		join carts c1
+		on c1.cart_id = cp.carts_cart_id
+		where c.cart_id = c1.cart_id 
+);
+	update carts as c 
+	set subtotal = total;
+	
 
-
-
-
+	-- Update orders using carts 
+	update orders as o
+	set total = (
+		select sum(c.total)
+		from orders o1 join carts c
+		on o1.carts_cart_id = c.cart_id
+		where o1.order_id = o.order_id 
+	);
+commit;
