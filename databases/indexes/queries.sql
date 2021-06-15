@@ -31,27 +31,26 @@ rollback to savepoint S1;
 
 savepoint S2;
 
-/* QUERY2: Let's assume that we often check orders with status 1 */
+/* QUERY2: Let's assume that we often check price for orders */
 explain analyze
 select *
 from orders o
-where o.order_status_order_status_id = 1
+where o.total = 1294.26
 -- Query planner performs seq scan with cost of 56.75
--- Planning Time 0.078ms
--- Execution Time 9.206ms
+-- Planning Time 0.060ms
+-- Execution Time 0.289ms
 
 create index unfinished_orders
-on orders (order_status_order_status_id)
-where order_status_order_status_id = 1
+on orders (total)
 
 explain analyze
 select *
 from orders o
-where o.order_status_order_status_id = 1
--- Query planner performs seq scan with cost of 51.82
--- Planning Time 0.478ms
--- Execution Time 10.029ms
--- PS No obvious speed increase, maybe due to the small table size
+where o.total = 1294.26
+-- Query planner performs seq scan with cost of 8.3
+-- Planning Time 0.154ms
+-- Execution Time 0.099ms
+-- x3 speed increase
 
 rollback to savepoint S2;
 
