@@ -35,18 +35,18 @@ savepoint S2;
 explain analyze
 select *
 from orders o
-where o.total = 1294.26
+where o.total = 1294.26;
 -- Query planner performs seq scan with cost of 56.75
 -- Planning Time 0.060ms
 -- Execution Time 0.289ms
 
 create index unfinished_orders
-on orders (total)
+on orders (total);
 
 explain analyze
 select *
 from orders o
-where o.total = 1294.26
+where o.total = 1294.26;
 -- Query planner performs seq scan with cost of 8.3
 -- Planning Time 0.154ms
 -- Execution Time 0.099ms
@@ -55,7 +55,7 @@ where o.total = 1294.26
 rollback to savepoint S2;
 
 
-savepoint S3
+savepoint S3;
 
 /* QUERY3: Let's assume that we often check products by title */
 explain analyse 
