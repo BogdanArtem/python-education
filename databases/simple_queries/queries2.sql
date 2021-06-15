@@ -52,7 +52,7 @@ except(
 select product_title
 from products p1
 except(
-    select distinct p2.product_title -- ordered products
+    select p2.product_title -- ordered products
 	from products p2
 		join cart_product cp
 		on p2.product_id = cp.products_product_id
@@ -93,10 +93,10 @@ from users u
   	on u.user_id = c.cart_id
 	join orders o
 	on o.carts_cart_id = c.cart_id
-	-- Add filtering of canceled orders
+	-- Select only finished orders
 	join order_status os
 	on os.order_status_id = o.order_status_order_status_id
-	where os.order_status_id != 5
+	where os.order_status_id = 4
 	--
 	group by user_id
 	order by gross desc
@@ -112,18 +112,13 @@ from users u
 	group by user_id;
 	-- PS each user has only one purchase
 
-/* Select  top 5 canceling users */
-select user_id, sum(o.total) as gross
-from users u
-  	join carts c
-  	on u.user_id = c.cart_id
-	join orders o
-	on o.carts_cart_id = c.cart_id
-	-- Filter only canceled users
-	join order_status os
-	on os.order_status_id = o.order_status_order_status_id
-	where os.order_status_id = 5
-	--
-	group by user_id
-	order by gross desc
-	limit 5;
+/* Select top 5 users without orders */
+select user_id, count(*)
+from users u join carts c
+	on u.user_id = c.cart_id
+	left join orders o
+	on o.order_id = c.cart_id
+where o.carts_cart_id is null
+group by user_id;
+-- 500 users without orders, each has only 1 cart
+
