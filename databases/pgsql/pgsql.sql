@@ -38,9 +38,6 @@ rollback;
 /* TASK2: Write 2 stored procedures with loops,
  * transactions and conditional statements */
 
-
-drop procedure ord_more_then
-
 -- Show price of orders more that x
 create or replace procedure ord_more_then(usd int)
 language plpgsql
@@ -103,7 +100,6 @@ begin
 end;
 $$;
 
-call update_total();
 
 /* TASK3: Compare price of each product with average price of
  * its category using window function */
