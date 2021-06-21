@@ -113,3 +113,60 @@ select c.category_title, p.product_title, p.price,
 	from products p
 	join categories c
 	using (category_id);
+
+/* TASK 4: Write 2 triggers and trgger processor */
+
+-- Add automatic time update to orders
+create or replace function update_cart_time()
+returns trigger
+language plpgsql
+as
+$$
+begin
+	new.updated_at = now();
+	return new;
+end;
+$$;
+
+create trigger update_cart_time
+	before update
+	on orders
+	for each row
+	execute procedure update_cart_time();
+
+-- Check
+begin;
+select * from orders where order_id = 2;
+
+update orders
+set total = total * 2 --0.5
+where order_id = 2;
+
+select * from orders where order_id = 2;
+rollback;
+
+-- Automatically add creation time upon creation of order
+create or replace function add_creation_time()
+returns trigger
+language plpgsql
+as
+$$
+begin
+	new.created_at = now();
+	return new;
+end;
+$$;
+
+create trigger add_creation_time
+	before insert
+	on orders
+	for each row
+	execute procedure add_creation_time();
+
+-- Check
+begin;
+
+insert into orders values (9999999, 1, 1, 835);
+select * from orders where order_id = 9999999;
+
+rollback;
