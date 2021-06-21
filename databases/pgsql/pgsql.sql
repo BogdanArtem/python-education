@@ -104,3 +104,12 @@ end;
 $$;
 
 call update_total();
+
+/* TASK3: Compare price of each product with average price of
+ * its category using window function */
+
+select c.category_title, p.product_title, p.price,
+	avg(p.price) over(partition by c.category_title) as avg_price
+	from products p
+	join categories c
+	using (category_id);
