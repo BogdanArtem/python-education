@@ -1,7 +1,5 @@
 /* Write 3 different querries and optimize them */
 
-select * from customers c limit 100;
-
 -- Plates of cars by customer name
 explain analyse 
 select cr.plate
