@@ -1,0 +1,84 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.7.2, pytest-6.2.4, py-1.10.0, pluggy-0.13.1
+rootdir: /Users/artembogdan/Programming_projects/python-education/python_module/unittesting
+plugins: cov-2.12.0
+collected 17 items
+
+test_main.py .........                                                   [ 52%]
+test_product.py .FFF                                                     [ 76%]
+test_shop.py ...F                                                        [100%]
+
+=================================== FAILURES ===================================
+________________________ test_product_subtract_quantity ________________________
+
+product = <main.Product object at 0x7ffb866deba8>
+
+    def test_product_subtract_quantity(product):
+        product.subtract_quantity()
+        assert product.quantity == 1
+        product.subtract_quantity(0)
+        assert product.quantity == 1
+        with pytest.raises(ValueError):
+            # Subtract more than products in stock
+>           product.subtract_quantity(-100)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+test_product.py:19: Failed
+__________________________ test_product_add_quantity ___________________________
+
+product = <main.Product object at 0x7ffb866ea400>
+
+    def test_product_add_quantity(product):
+        product.add_quantity(1)
+        assert product.quantity == 3
+        with pytest.raises(ValueError):
+            # Add negative value of products
+>           product.add_quantity(-1)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+test_product.py:26: Failed
+__________________________ test_product_change_price ___________________________
+
+product = <main.Product object at 0x7ffb8797a208>
+
+    def test_product_change_price(product):
+        product.change_price(500)
+        assert product.price == 500
+        with pytest.raises(ValueError):
+            # Set negative price
+>           product.change_price(-500)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+test_product.py:33: Failed
+______________________________ test_sell_product _______________________________
+
+shop_with_products = <main.Shop object at 0x7ffb87999128>
+
+    def test_sell_product(shop_with_products):
+        with pytest.raises(ValueError):
+            assert shop_with_products.sell_product('Memory', 2) == 30
+            assert shop_with_products.sell_product('HDD') == 30
+            # Delete the last HDD
+            shop_with_products.sell_product('HDD')
+            # Delete non existent product
+            assert shop_with_products.sell_product('HDD') == None
+            with pytest.raises(ValueError):
+                # Sell more than in stock
+>               shop_with_products.sell_product('GPU', 100)
+E               Failed: DID NOT RAISE <class 'ValueError'>
+
+test_shop.py:49: Failed
+
+---------- coverage: platform darwin, python 3.7.2-final-0 -----------
+Name      Stmts   Miss  Cover
+-----------------------------
+main.py      57      0   100%
+-----------------------------
+TOTAL        57      0   100%
+
+=========================== short test summary info ============================
+FAILED test_product.py::test_product_subtract_quantity - Failed: DID NOT RAIS...
+FAILED test_product.py::test_product_add_quantity - Failed: DID NOT RAISE <cl...
+FAILED test_product.py::test_product_change_price - Failed: DID NOT RAISE <cl...
+FAILED test_shop.py::test_sell_product - Failed: DID NOT RAISE <class 'ValueE...
+========================= 4 failed, 13 passed in 0.27s =========================
